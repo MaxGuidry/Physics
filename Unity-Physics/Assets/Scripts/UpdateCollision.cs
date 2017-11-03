@@ -24,7 +24,10 @@ public class UpdateCollision : MonoBehaviour
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
             go.transform.position = new Vector3(2*i,2*i,0);
-            go.AddComponent<ColliderBox>();
+            ColliderBox cb = go.AddComponent<ColliderBox>();
+            if(cb.collider == null)
+                cb.collider = new AABB();
+            
         }
     }
     [System.Serializable]
@@ -39,6 +42,11 @@ public class UpdateCollision : MonoBehaviour
     public List<AABBPair> ZPair = new List<AABBPair>();
     public List<AABBPair> Collisions = new List<AABBPair>();
 
+    void Update()
+    {
+
+
+    }
     // Update is called once per frame
     private void FixedUpdate()
     {
@@ -64,14 +72,14 @@ public class UpdateCollision : MonoBehaviour
                                                             90f))));
 
             //Debug.DrawLine(colliderBox.collider.min, colliderBox.collider.max);
-            Debug.DrawLine(colliderBox.collider.min,
-                new Vector3(colliderBox.collider.min.x, colliderBox.collider.max.y, 0));
-            Debug.DrawLine(new Vector3(colliderBox.collider.min.x, colliderBox.collider.max.y, 0),
-                colliderBox.collider.max);
-            Debug.DrawLine(colliderBox.collider.max,
-                new Vector3(colliderBox.collider.max.x, colliderBox.collider.min.y, 0));
-            Debug.DrawLine(new Vector3(colliderBox.collider.max.x, colliderBox.collider.min.y, 0),
-                colliderBox.collider.min);
+            //Debug.DrawLine(colliderBox.collider.min,
+            //    new Vector3(colliderBox.collider.min.x, colliderBox.collider.max.y, 0));
+            //Debug.DrawLine(new Vector3(colliderBox.collider.min.x, colliderBox.collider.max.y, 0),
+            //    colliderBox.collider.max);
+            //Debug.DrawLine(colliderBox.collider.max,
+            //    new Vector3(colliderBox.collider.max.x, colliderBox.collider.min.y, 0));
+            //Debug.DrawLine(new Vector3(colliderBox.collider.max.x, colliderBox.collider.min.y, 0),
+            //    colliderBox.collider.min);
 
         }
         XPair.Clear();
@@ -111,7 +119,7 @@ public class UpdateCollision : MonoBehaviour
         Collisions = CombineCollisions(pairList);
         MyWay = maxnum;
 
-        Debug.Log(Collisions.Count);
+       // Debug.Log(Collisions.Count);
         #region MyRegion
 
 
@@ -239,7 +247,6 @@ public class UpdateCollision : MonoBehaviour
         */
 
         #endregion
-        Debug.Log(Time.deltaTime);
     }
 
     public List<AABBPair> CombineCollisions(List<List<AABBPair>> allPairs)
