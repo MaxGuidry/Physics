@@ -24,6 +24,7 @@ public class UpdateCollision : MonoBehaviour
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
             go.transform.position = new Vector3(2*i,2*i,0);
+            go.AddComponent<ColliderBox>();
         }
     }
     [System.Serializable]
