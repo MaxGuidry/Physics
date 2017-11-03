@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
+using System.Linq;
+
 
 public class UpdateCollision : MonoBehaviour
 {
@@ -13,11 +14,19 @@ public class UpdateCollision : MonoBehaviour
 
 
     }
+    public int MyWay = 0;
 
+    public int MrMattWay = 0;
     // Use this for initialization
     private void Start()
     {
+        for (int i = 0; i < 7000; i++)
+        {
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            go.transform.position = new Vector3(2*i,2*i,0);
+        }
     }
+    [System.Serializable]
     public struct AABBPair
     {
         public ColliderBox object1;
@@ -32,9 +41,8 @@ public class UpdateCollision : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        XPair.Clear();
-        YPair.Clear();
-        ZPair.Clear();
+        MrMattWay = 0;
+        MyWay = 0;
         var cols = FindObjectsOfType<ColliderBox>().ToList();
         foreach (var colliderBox in cols)
         {
@@ -65,6 +73,9 @@ public class UpdateCollision : MonoBehaviour
                 colliderBox.collider.min);
 
         }
+        XPair.Clear();
+        YPair.Clear();
+        //ZPair.Clear();
         XPair = SortAndSweep(cols, AXIS.X);
         List<ColliderBox> objs = new List<ColliderBox>();
         foreach (var pair in XPair)
@@ -74,11 +85,31 @@ public class UpdateCollision : MonoBehaviour
             if (!objs.Contains(pair.object2))
                 objs.Add(pair.object2);
         }
-        YPair = SortAndSweep(objs, AXIS.Y);
-        List<List<AABBPair>> pairslist = new List<List<AABBPair>>();
-        pairslist.Add(XPair);
-        pairslist.Add(YPair);
-        Collisions =  CombineCollisions(pairslist);
+        if (objs.Count != 0)
+
+        {
+            YPair = SortAndSweep(objs, AXIS.Y);
+
+            List<List<AABBPair>> pairslist = new List<List<AABBPair>>();
+            pairslist.Add(XPair);
+            pairslist.Add(YPair);
+            Collisions = CombineCollisions(pairslist);
+        }
+
+        MrMattWay = 0;
+        int maxnum = MyWay;
+
+        cols = FindObjectsOfType<ColliderBox>().ToList();
+        XPair.Clear();
+        YPair.Clear();
+        XPair = SortAndSweep(cols, AXIS.X);
+        YPair = SortAndSweep(cols, AXIS.Y);
+        List<List<AABBPair>> pairList = new List<List<AABBPair>>();
+        pairList.Add(XPair);
+        pairList.Add(YPair);
+        Collisions = CombineCollisions(pairList);
+        MyWay = maxnum;
+
         Debug.Log(Collisions.Count);
         #region MyRegion
 
@@ -207,24 +238,23 @@ public class UpdateCollision : MonoBehaviour
         */
 
         #endregion
-
+        Debug.Log(Time.deltaTime);
     }
 
     public List<AABBPair> CombineCollisions(List<List<AABBPair>> allPairs)
     {
+
         List<AABBPair> AllAxis = new List<AABBPair>();
 
         foreach (var aabbPair in allPairs[0])
         {
-
-
             bool all = true;
             foreach (var pair in allPairs)
             {
-                if (!pair.Contains(aabbPair) && !pair.Contains(new AABBPair(){object1 = aabbPair.object2,object2 = aabbPair.object1}))
+                if (!pair.Contains(aabbPair) && !pair.Contains(new AABBPair() { object1 = aabbPair.object2, object2 = aabbPair.object1 }))
                     all = false;
             }
-            if(all)
+            if (all)
                 AllAxis.Add(aabbPair);
         }
         return AllAxis;
@@ -251,13 +281,16 @@ public class UpdateCollision : MonoBehaviour
         activeList.Add(objs[0]);
         for (i = 0; i < objs.Count - 1; i++)
         {
-            List<ColliderBox> tempActive = new List<ColliderBox>();
+            var tempActive = new List<ColliderBox>();
             if (activeList.Count == 0)
                 activeList.Add(objs[i]);
             tempActive.AddRange(activeList);
 
             foreach (var colliderBox in activeList)
             {
+                MyWay++;
+                MrMattWay++;
+
                 bool collision = false;
                 switch (axis)
                 {
