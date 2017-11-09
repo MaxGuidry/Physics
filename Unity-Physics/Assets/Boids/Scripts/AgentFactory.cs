@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AgentFactory : MonoBehaviour
 {
-
+    public static int cFactor =0, sFactor = 0, aFactor = 0, wFactor = 0;
     public int count;
     public List<Agent> agents = new List<Agent>();
     public List<AgentBehavior> agentBehaviors = new List<AgentBehavior>();

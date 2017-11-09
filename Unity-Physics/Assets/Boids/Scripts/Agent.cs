@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Max
         [SerializeField]
         protected float mass = 1;
         [SerializeField]
-        protected Vector3 velocty, acceleration, position;
+        protected Vector3 velocity, acceleration, position;
         [SerializeField]
         protected float maxSpeed = 10;
 
@@ -25,6 +26,8 @@ namespace Max
                 return false;
             Vector3 fVec = direction.normalized * force;
             acceleration += fVec / mass;
+            if (Single.IsNaN(acceleration.x) || Single.IsNaN(acceleration.y) || Single.IsNaN(acceleration.z))
+                Debug.Break();
             return true;
         }
 
@@ -41,7 +44,8 @@ namespace Max
             this.mass = Mass;
             maxSpeed = maxS;
             position = pos;
-
+            velocity = new Vector3();
+            acceleration = new Vector3();
 
         }
         public Vector3 GetPosition()
