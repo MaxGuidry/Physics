@@ -11,7 +11,8 @@ namespace Max
 
     public class BoidBehavior : AgentBehavior
     {
-
+        private Thread t;
+        private bool thread = true;
         public void SetAgent(Agent agent)
         {
 
@@ -28,7 +29,7 @@ namespace Max
                 a.Initialize(1, 50, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
 
             }
-
+           
         }
         // Use this for initialization
         void Start()
@@ -53,23 +54,27 @@ namespace Max
         // Update is called once per frame
         void Update()
         {
+            (a as Boid).neighbors = AgentFactory.GetAgents((a as Boid).GetType());
             Vector3 f = .1f * AgentFactory.cFactor * (a as Boid).Cohesion();
             f += .1f * AgentFactory.sFactor * (a as Boid).Seperation();
             f += .1f * AgentFactory.aFactor * (a as Boid).Alignment();
             f += .1f * AgentFactory.wFactor * (a as Boid).Wander();
-          
-            a.Add_Force(f);
-            this.transform.LookAt(this.transform.position +(a as Boid).GetVelocity());
 
+            a.Add_Force(f);
+            this.transform.LookAt(this.transform.position + (a as Boid).GetVelocity());
+           
         }
 
         void OnDisable()
         {
-
+            if (t != null)
+                t.Abort();
         }
         void FixedUpdate()
         {
            
+            if (Input.GetKeyDown(KeyCode.Space))
+                thread = false;
             this.transform.position = a.Update_Agent();
         }
 

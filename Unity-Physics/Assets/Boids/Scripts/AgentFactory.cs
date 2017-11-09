@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Max;
+using NUnit.Compatibility;
 using UnityEngine;
 
 public class AgentFactory : MonoBehaviour
@@ -10,7 +12,7 @@ public class AgentFactory : MonoBehaviour
     public int count;
     public List<Agent> agents = new List<Agent>();
     public List<AgentBehavior> agentBehaviors = new List<AgentBehavior>();
-    public static List<AgentBehavior> currentAgents = new List<AgentBehavior>();
+    public static List<Agent> currentAgents = new List<Agent>();
     [ContextMenu("Create")]
     public void Create()
     {
@@ -29,6 +31,7 @@ public class AgentFactory : MonoBehaviour
             agentBehaviors.Add(behavior);
             agents.Add(boid);
             behavior.SetAgent(boid);
+            currentAgents = agents;
         }
 
 
@@ -48,12 +51,23 @@ public class AgentFactory : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        Create();
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentAgents = FindObjectsOfType<AgentBehavior>().ToList();
+        
+    }
+
+    public static List<Agent> GetAgents(Type t)
+    {
+        List<Agent> l = new List<Agent>();
+        foreach (var agent in currentAgents)
+        {
+            if(agent.GetType() == t)
+                l.Add(agent);
+        }
+        return l;
     }
 }

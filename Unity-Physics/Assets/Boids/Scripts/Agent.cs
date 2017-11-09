@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Max
 {
@@ -26,8 +27,7 @@ namespace Max
                 return false;
             Vector3 fVec = direction.normalized * force;
             acceleration += fVec / mass;
-            if (Single.IsNaN(acceleration.x) || Single.IsNaN(acceleration.y) || Single.IsNaN(acceleration.z))
-                Debug.Break();
+            
             return true;
         }
 
@@ -44,7 +44,8 @@ namespace Max
             this.mass = Mass;
             maxSpeed = maxS;
             position = pos;
-            velocity = new Vector3();
+            velocity = Vector3.zero;
+            //new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1));
             acceleration = new Vector3();
 
         }

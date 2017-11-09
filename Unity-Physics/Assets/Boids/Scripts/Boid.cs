@@ -12,7 +12,7 @@ namespace Max
     public class Boid : Agent
     {
         
-        public List<Boid> neighbors = new List<Boid>();
+        public List<Agent> neighbors = new List<Agent>();
         public override Vector3 Update_Agent()
         {
             
@@ -29,11 +29,12 @@ namespace Max
         
         public void AddNeighbor(Boid neighbor)
         {
+            
             if (neighbor == null)
                 return;
             if (!neighbors.Contains(neighbor))
                 neighbors.Add(neighbor);
-        }
+            }
 
         public void RemoveNeighbor(Boid neighbor)
         {
@@ -41,6 +42,7 @@ namespace Max
                 return;
             if (neighbors.Contains(neighbor))
                 neighbors.Remove(neighbor);
+
         }
         public Vector3 Cohesion()
         {
@@ -56,7 +58,7 @@ namespace Max
             Vector3 com = new Vector3();
             foreach (var neighbor in neighbors)
             {
-                com += neighbor.position;
+                com += (neighbor as Boid).position;
             }
             
             com = com / neighbors.Count;
@@ -75,11 +77,11 @@ namespace Max
             Vector3 force = new Vector3();
             foreach (var neighbor in neighbors)
             {
-                Vector3 dif = position - neighbor.position;
+                Vector3 dif = position - (neighbor as Boid).position;
                 if (dif.magnitude == 0)
                     return Wander();
                 if (dif.magnitude < 10)
-                    force += (position - neighbor.position).normalized * 10f/dif.magnitude;
+                    force += (position - (neighbor as Boid).position).normalized * 10f/dif.magnitude;
             }
             return force;
         }
@@ -88,15 +90,14 @@ namespace Max
         {
             if(neighbors.Count == 0)
                 return Vector3.zero;
-            Vector3 force = new Vector3();
             Vector3 avgVelo = new Vector3();
             foreach (var neighbor in neighbors)
             {
-                avgVelo += neighbor.velocity;
+                avgVelo += (neighbor as Boid).velocity;
             }
             avgVelo = avgVelo / neighbors.Count;
-            force = avgVelo;
-            return force;
+             
+            return avgVelo;
 
         }
 
