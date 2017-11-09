@@ -10,6 +10,7 @@ namespace Max
 
     public class Boid : Agent
     {
+        
         public List<Boid> neighbors = new List<Boid>();
         public override Vector3 Update_Agent()
         {

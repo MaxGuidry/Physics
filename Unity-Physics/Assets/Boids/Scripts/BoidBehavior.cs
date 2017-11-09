@@ -10,6 +10,7 @@ namespace Max
     public class BoidBehavior : AgentBehavior
     {
         private Thread t;
+        private bool threadAlive;
         public void SetAgent(Agent agent)
         {
 
@@ -18,7 +19,7 @@ namespace Max
         // Use this for initialization
         void Start()
         {
-           
+
             if (a == null)
 
             {
@@ -26,20 +27,30 @@ namespace Max
                 a.Initialize(1, 2, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
             }
 
-            foreach (var boid in GameObject.FindObjectsOfType<BoidBehavior>())
+            foreach (BoidBehavior boid in AgentFactory.currentAgents)
             {
                 if (this.gameObject == boid.gameObject)
                     continue;
-                if ((boid.gameObject.transform.position - this.transform.position).magnitude < 5f)
+                if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 5f)
                     (a as Boid).AddNeighbor(boid.a as Boid);
             }
-            t= new Thread(() =>
+            threadAlive = true;
+            t = new Thread(() =>
             {
-                while (true)
+                while (threadAlive)
                 {
                     Thread.CurrentThread.IsBackground = true;
+
+                    foreach (BoidBehavior boid in AgentFactory.currentAgents)
+                    {
+                        if (a == boid.a)
+                            continue;
+                        if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 10f)
+                            (a as Boid).AddNeighbor(boid.a as Boid);
+                    }
                     Vector3 f = .1f * (a as Boid).Cohesion();
                     a.Add_Force(f);
+                    Debug.Log("Test");
                 }
             });
             t.Start();
@@ -48,14 +59,10 @@ namespace Max
         // Update is called once per frame
         void Update()
         {
-            foreach (var boid in GameObject.FindObjectsOfType<BoidBehavior>())
-            {
-                if (this.gameObject == boid.gameObject)
-                    continue;
-                if ((boid.gameObject.transform.position - this.transform.position).magnitude < 15f)
-                    (a as Boid).AddNeighbor(boid.a as Boid);
-            }
-    
+
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                threadAlive = !threadAlive;
         }
         void FixedUpdate()
         {

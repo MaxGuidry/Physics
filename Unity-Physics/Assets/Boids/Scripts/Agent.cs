@@ -44,5 +44,9 @@ namespace Max
 
 
         }
+        public Vector3 GetPosition()
+        {
+            return position;
+        }
     }
 }
