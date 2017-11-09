@@ -31,6 +31,13 @@ namespace Max
                 neighbors.Add(neighbor);
         }
 
+        public void RemoveNeighbor(Boid neighbor)
+        {
+            if(neighbor== null)
+                return;
+            if (neighbors.Contains(neighbor))
+                neighbors.Remove(neighbor);
+        }
         public Vector3 Cohesion()
         {
             Vector3 force = new Vector3();
