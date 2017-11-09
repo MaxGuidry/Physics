@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class AgentFactory : MonoBehaviour
 {
-    private Thread t;
+    private Thread t1,t2,t3,t4;
     private bool threadAlive;
     public int count;
     public List<Agent> agents = new List<Agent>();
@@ -51,20 +51,59 @@ public class AgentFactory : MonoBehaviour
     void Start()
     {
         threadAlive = true;
-        t = new Thread(() =>
+        t1 = new Thread(() =>
         {
             while (threadAlive)
             {
                 Thread.CurrentThread.IsBackground = true;
-
-                foreach (BoidBehavior b in AgentFactory.currentAgents)
+                for (int i = 0; i < AgentFactory.currentAgents.Count / 4f; i++)
                 {
-
-                    b.UpdateBoidInfo();
+                    (AgentFactory.currentAgents[i] as BoidBehavior).UpdateBoidInfo();
                 }
+                Debug.Log("Thread 1");
             }
         });
-        t.Start();
+        t1.Start();
+        t2 = new Thread(() =>
+        {
+            while (threadAlive)
+            {
+                Thread.CurrentThread.IsBackground = true;
+                for (int i =(int)(AgentFactory.currentAgents.Count/4f); i < (AgentFactory.currentAgents.Count / 4f)+(AgentFactory.currentAgents.Count/4f); i++)
+                {
+                    (AgentFactory.currentAgents[i] as BoidBehavior).UpdateBoidInfo();
+                }
+                Debug.Log("Thread 2");
+            }
+        });
+        t2.Start();
+        t3 = new Thread(() =>
+        {
+            while (threadAlive)
+            {
+                Thread.CurrentThread.IsBackground = true;
+                for (int i = (int)(AgentFactory.currentAgents.Count / 4f) + (int)(AgentFactory.currentAgents.Count/4f); i < (AgentFactory.currentAgents.Count / 4f) + (2 * AgentFactory.currentAgents.Count/4f); i++)
+                {
+                    (AgentFactory.currentAgents[i] as BoidBehavior).UpdateBoidInfo();
+                }
+                Debug.Log("Thread 3");
+            }
+        });
+        t3.Start();
+        t4 = new Thread(() =>
+        {
+            while (threadAlive)
+            {
+                Thread.CurrentThread.IsBackground = true;
+                for (int i = (int)(AgentFactory.currentAgents.Count / 4f) + (int)(2 * AgentFactory.currentAgents.Count/4f); i < (AgentFactory.currentAgents.Count / 4f) + (3 * AgentFactory.currentAgents.Count/4f); i++)
+                {
+                    //Debug.Log(i);
+                    (AgentFactory.currentAgents[i] as BoidBehavior).UpdateBoidInfo();
+                }
+                Debug.Log("Thread 4");
+            }
+        });
+        t4.Start();
     }
 
     // Update is called once per frame
@@ -77,7 +116,13 @@ public class AgentFactory : MonoBehaviour
     void OnDisable()
     {
         threadAlive = false;
-        if (t.IsAlive)
-            t.Abort();
+        if (t1.IsAlive)
+            t1.Abort();
+        if (t2.IsAlive)
+            t2.Abort();
+        if (t3.IsAlive)
+            t3.Abort();
+        if (t4.IsAlive)
+            t4.Abort();
     }
 }

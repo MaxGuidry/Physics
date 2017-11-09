@@ -60,7 +60,7 @@ namespace Max
                 if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 10f)
                     (a as Boid).AddNeighbor(boid.a as Boid);
             }
-            Vector3 f = .1f * (a as Boid).Cohesion();
+            Vector3 f = 1f * (a as Boid).Cohesion();
             a.Add_Force(f);
         }
     }
