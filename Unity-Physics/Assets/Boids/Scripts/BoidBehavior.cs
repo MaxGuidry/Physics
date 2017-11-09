@@ -9,8 +9,7 @@ namespace Max
 
     public class BoidBehavior : AgentBehavior
     {
-        private Thread t;
-        private bool threadAlive;
+
         public void SetAgent(Agent agent)
         {
 
@@ -34,26 +33,7 @@ namespace Max
                 if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 5f)
                     (a as Boid).AddNeighbor(boid.a as Boid);
             }
-            threadAlive = true;
-            t = new Thread(() =>
-            {
-                while (threadAlive)
-                {
-                    Thread.CurrentThread.IsBackground = true;
 
-                    foreach (BoidBehavior boid in AgentFactory.currentAgents)
-                    {
-                        if (a == boid.a)
-                            continue;
-                        if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 10f)
-                            (a as Boid).AddNeighbor(boid.a as Boid);
-                    }
-                    Vector3 f = .1f * (a as Boid).Cohesion();
-                    a.Add_Force(f);
-                    Debug.Log("Test");
-                }
-            });
-            t.Start();
         }
 
         // Update is called once per frame
@@ -61,12 +41,27 @@ namespace Max
         {
 
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                threadAlive = !threadAlive;
+
         }
+
+
         void FixedUpdate()
         {
             this.transform.position = a.Update_Agent();
+        }
+
+        public void UpdateBoidInfo()
+        {
+
+            foreach (BoidBehavior boid in AgentFactory.currentAgents)
+            {
+                if (a == boid.a)
+                    continue;
+                if ((boid.a.GetPosition() - a.GetPosition()).magnitude < 10f)
+                    (a as Boid).AddNeighbor(boid.a as Boid);
+            }
+            Vector3 f = .1f * (a as Boid).Cohesion();
+            a.Add_Force(f);
         }
     }
 }
