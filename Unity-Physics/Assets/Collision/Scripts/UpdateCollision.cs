@@ -14,20 +14,20 @@ public class UpdateCollision : MonoBehaviour
 
 
     }
-    public int MyWay = 0;
-
-    public int MrMattWay = 0;
+    
     // Use this for initialization
     private void Start()
     {
         for (int i = 0; i < 7000; i++)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            go.transform.position = new Vector3(2*i,2*i,0);
-            ColliderBox cb = go.AddComponent<ColliderBox>();
-            if(cb.collider == null)
-                cb.collider = new AABB();
-            
+            go.transform.position = new Vector3(2 * i, 2 * i, 0);
+            go.AddComponent<Rigidbody>();
+            go.AddComponent<BoxCollider>();
+            //ColliderBox cb = go.AddComponent<ColliderBox>();
+            //if (cb.collider == null)
+            //    cb.collider = new AABB();
+
         }
     }
     [System.Serializable]
@@ -47,15 +47,15 @@ public class UpdateCollision : MonoBehaviour
 
 
     }
-    // Update is called once per frame
     private void FixedUpdate()
     {
-        MrMattWay = 0;
-        MyWay = 0;
+
         var cols = FindObjectsOfType<ColliderBox>().ToList();
+        if (cols.Count == 0)
+            return;
         foreach (var colliderBox in cols)
         {
-            var bl = colliderBox.gameObject.transform.position;
+           
 
             colliderBox.collider.min = colliderBox.gameObject.transform.position - .5f *
                                        colliderBox.gameObject.transform.localScale *
@@ -105,8 +105,7 @@ public class UpdateCollision : MonoBehaviour
             Collisions = CombineCollisions(pairslist);
         }
 
-        MrMattWay = 0;
-        int maxnum = MyWay;
+        
 
         cols = FindObjectsOfType<ColliderBox>().ToList();
         XPair.Clear();
@@ -117,7 +116,6 @@ public class UpdateCollision : MonoBehaviour
         pairList.Add(XPair);
         pairList.Add(YPair);
         Collisions = CombineCollisions(pairList);
-        MyWay = maxnum;
 
        // Debug.Log(Collisions.Count);
         #region MyRegion
@@ -296,8 +294,7 @@ public class UpdateCollision : MonoBehaviour
 
             foreach (var colliderBox in activeList)
             {
-                MyWay++;
-                MrMattWay++;
+               
 
                 bool collision = false;
                 switch (axis)
