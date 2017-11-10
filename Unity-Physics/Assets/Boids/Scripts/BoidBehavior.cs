@@ -34,34 +34,37 @@ namespace Max
         // Use this for initialization
         void Start()
         {
-            SphereCollider col = this.GetComponent<SphereCollider>();
-            if (col == null)
-                col = this.gameObject.AddComponent<SphereCollider>();
-            col.radius = 12;
-            col.isTrigger = true;
+            //SphereCollider col = this.GetComponent<SphereCollider>();
+            //if (col == null)
+            //    col = this.gameObject.AddComponent<SphereCollider>();
+            //col.radius = 12;
+            //col.isTrigger = true;
 
 
-            foreach (BoidBehavior boid in GameObject.FindObjectsOfType<AgentBehavior>())
-            {
-                if (this.gameObject == boid.gameObject)
-                    continue;
-                if ((boid.a.GetPosition() - a.GetPosition()).magnitude < col.radius)
-                    (a as Boid).AddNeighbor(boid.a as Boid);
-            }
+            //foreach (BoidBehavior boid in GameObject.FindObjectsOfType<AgentBehavior>())
+            //{
+            //    if (this.gameObject == boid.gameObject)
+            //        continue;
+            //    if ((boid.a.GetPosition() - a.GetPosition()).magnitude < col.radius)
+            //        (a as Boid).AddNeighbor(boid.a as Boid);
+            //}
 
         }
 
         // Update is called once per frame
         void Update()
         {
-            (a as Boid).neighbors = AgentFactory.GetAgents((a as Boid).GetType());
-            Vector3 f = .1f * AgentFactory.cFactor * (a as Boid).Cohesion();
-            f += .1f * AgentFactory.sFactor * (a as Boid).Seperation();
-            f += .1f * AgentFactory.aFactor * (a as Boid).Alignment();
-            f += .1f * AgentFactory.wFactor * (a as Boid).Wander();
+            (a as Boid).neighbors = AgentFactory.GetAgents(typeof(Boid));
+            Vector3 c = .1f * AgentFactory.cFactor * (a as Boid).Cohesion();
+            Debug.DrawLine(this.transform.position,this.transform.position + c.normalized * 2, Color.blue);
+            Vector3 s = .1f * AgentFactory.sFactor * (a as Boid).Seperation();
+            Debug.DrawLine(this.transform.position, this.transform.position + s.normalized * 2, Color.green);
+            Vector3 al = .1f * AgentFactory.aFactor * (a as Boid).Alignment();
+            Debug.DrawLine(this.transform.position, this.transform.position + al.normalized * 2, Color.red);
+            Vector3 w = .1f * AgentFactory.wFactor * (a as Boid).Wander();
 
-            a.Add_Force(f);
-            this.transform.LookAt(this.transform.position + (a as Boid).GetVelocity());
+            a.Add_Force(c+s+al+w);
+            //this.transform.LookAt(this.transform.position + (a as Boid).GetVelocity());
            
         }
 

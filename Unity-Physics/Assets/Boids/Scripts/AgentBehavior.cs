@@ -6,6 +6,7 @@ namespace Max
 {
     public abstract class AgentBehavior : MonoBehaviour
     {
+        [SerializeField]
         protected Agent a;
         
     }

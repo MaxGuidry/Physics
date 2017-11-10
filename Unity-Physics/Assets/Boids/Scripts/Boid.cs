@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Max
 {
-
+    [System.Serializable]
     public class Boid : Agent
     {
         
@@ -58,7 +58,9 @@ namespace Max
             Vector3 com = new Vector3();
             foreach (var neighbor in neighbors)
             {
-                com += (neighbor as Boid).position;
+                if (neighbor == (this as Agent))
+                    continue;
+                com += (neighbor as Boid).position * (neighbor as Boid).mass;
             }
             
             com = com / neighbors.Count;
@@ -67,7 +69,7 @@ namespace Max
             force = com;
 
             //  }).Start();
-            return force;
+            return force.normalized;
         }
 
         public Vector3 Seperation()
@@ -77,10 +79,12 @@ namespace Max
             Vector3 force = new Vector3();
             foreach (var neighbor in neighbors)
             {
+                if(neighbor == (this as Agent))
+                    continue;
                 Vector3 dif = position - (neighbor as Boid).position;
                 if (dif.magnitude == 0)
-                    return Wander();
-                if (dif.magnitude < 10)
+                    force += Vector3.zero;
+                else if (dif.magnitude < 10)
                     force += (position - (neighbor as Boid).position).normalized * 10f/dif.magnitude;
             }
             return force;
@@ -93,6 +97,8 @@ namespace Max
             Vector3 avgVelo = new Vector3();
             foreach (var neighbor in neighbors)
             {
+                if (neighbor == (this as Agent))
+                    continue;
                 avgVelo += (neighbor as Boid).velocity;
             }
             avgVelo = avgVelo / neighbors.Count;

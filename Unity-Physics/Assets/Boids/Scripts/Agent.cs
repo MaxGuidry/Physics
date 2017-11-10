@@ -8,7 +8,7 @@ namespace Max
 {
 
 
-
+    [System.Serializable]
     public abstract class Agent : ScriptableObject
     {
 
