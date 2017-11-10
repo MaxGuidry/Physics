@@ -26,20 +26,23 @@ namespace Max
 
             {
                 a = ScriptableObject.CreateInstance<Boid>();
-                a.Initialize(1, 50, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                a.Initialize(1, 50, new Vector3(Random.Range(-20, 20), Random.Range(-20, 20), Random.Range(-20, 20)));
 
             }
-           
+
         }
         // Use this for initialization
         void Start()
         {
-            //SphereCollider col = this.GetComponent<SphereCollider>();
-            //if (col == null)
-            //    col = this.gameObject.AddComponent<SphereCollider>();
-            //col.radius = 12;
-            //col.isTrigger = true;
-
+            SphereCollider col = this.GetComponent<SphereCollider>();
+            if (col == null)
+                col = this.gameObject.AddComponent<SphereCollider>();
+            col.radius = 5;
+            col.isTrigger = true;
+            Rigidbody rb = this.GetComponent<Rigidbody>();
+            if (rb == null)
+                rb = this.gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = false;
 
             //foreach (BoidBehavior boid in GameObject.FindObjectsOfType<AgentBehavior>())
             //{
@@ -54,18 +57,18 @@ namespace Max
         // Update is called once per frame
         void Update()
         {
-            (a as Boid).neighbors = AgentFactory.GetAgents(typeof(Boid));
-            Vector3 c = .1f * AgentFactory.cFactor * (a as Boid).Cohesion();
-            Debug.DrawLine(this.transform.position,this.transform.position + c.normalized * 2, Color.blue);
-            Vector3 s = .1f * AgentFactory.sFactor * (a as Boid).Seperation();
+            //(a as Boid).neighbors = AgentFactory.GetAgents(typeof(Boid));
+            Vector3 c = .5f * AgentFactory.cFactor * (a as Boid).Cohesion();
+            Debug.DrawLine(this.transform.position, this.transform.position + c.normalized * 2, Color.blue);
+            Vector3 s = .5f * AgentFactory.sFactor * (a as Boid).Seperation();
             Debug.DrawLine(this.transform.position, this.transform.position + s.normalized * 2, Color.green);
-            Vector3 al = .1f * AgentFactory.aFactor * (a as Boid).Alignment();
+            Vector3 al = .5f * AgentFactory.aFactor * (a as Boid).Alignment();
             Debug.DrawLine(this.transform.position, this.transform.position + al.normalized * 2, Color.red);
-            Vector3 w = .1f * AgentFactory.wFactor * (a as Boid).Wander();
-
-            a.Add_Force(c+s+al+w);
+            Vector3 w = .5f * AgentFactory.wFactor * (a as Boid).Wander();
+            a.Add_Force(c + s + al + w);
             //this.transform.LookAt(this.transform.position + (a as Boid).GetVelocity());
-           
+            this.transform.forward = (a as Boid).GetVelocity().normalized;
+
         }
 
         void OnDisable()
@@ -75,24 +78,27 @@ namespace Max
         }
         void FixedUpdate()
         {
-           
+            //if (AgentFactory.currentAgents.Count != 0)
+            //    Debug.Log(AgentFactory.currentAgents[0].maxSpeed);
             if (Input.GetKeyDown(KeyCode.Space))
                 thread = false;
             this.transform.position = a.Update_Agent();
+            if (this.transform.position.magnitude > 5)
+                a.Add_Force(50 * (a as Boid).GetPosition().magnitude - 4, -a.GetPosition());
         }
 
-        //void OnTriggerEnter(Collider other)
-        //{
-        //    BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
-        //    if (bh != null)
-        //        (a as Boid).AddNeighbor(bh.a as Boid);
-        //}
+        void OnTriggerEnter(Collider other)
+        {
+            BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
+            if (bh != null)
+                (a as Boid).AddNeighbor(bh.a as Boid);
+        }
 
-        //void OnTriggerExit(Collider other)
-        //{
-        //    BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
-        //    if (bh != null)
-        //        (a as Boid).RemoveNeighbor(bh.a as Boid);
-        //}
+        void OnTriggerExit(Collider other)
+        {
+            BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
+            if (bh != null)
+                (a as Boid).RemoveNeighbor(bh.a as Boid);
+        }
     }
 }

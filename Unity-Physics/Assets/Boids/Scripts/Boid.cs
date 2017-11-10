@@ -84,8 +84,8 @@ namespace Max
                 Vector3 dif = position - (neighbor as Boid).position;
                 if (dif.magnitude == 0)
                     force += Vector3.zero;
-                else if (dif.magnitude < 10)
-                    force += (position - (neighbor as Boid).position).normalized * 10f/dif.magnitude;
+                else if (dif.magnitude < 3)
+                    force += (position - (neighbor as Boid).position).normalized * (30f/(dif.magnitude+2)-5);
             }
             return force;
         }
@@ -103,13 +103,13 @@ namespace Max
             }
             avgVelo = avgVelo / neighbors.Count;
              
-            return avgVelo;
+            return avgVelo.normalized;
 
         }
 
         public Vector3 Wander()
         {
-            return (new Vector3(Mathf.Cos(Random.Range(0,180)), Mathf.Cos(Random.Range(0, 180)), Mathf.Cos(Random.Range(0, 180))).normalized * (velocity.magnitude+1f));
+            return (new Vector3(Mathf.Cos(Random.Range(0,170)), Mathf.Cos(Random.Range(0, 170)), Mathf.Cos(Random.Range(0, 170))).normalized * .1f * (velocity.magnitude+1f));
         }
 
         public Vector3 GetVelocity()

@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class AgentFactory : MonoBehaviour
 {
+    public GameObject agentmodelPrefab;
     public static int cFactor = 0, sFactor = 0, aFactor = 0, wFactor = 0;
     public int count;
     [HideInInspector]
@@ -25,7 +26,8 @@ public class AgentFactory : MonoBehaviour
             agentBehaviors = new List<AgentBehavior>();
         for (int i = 0; i < count; i++)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+           // var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            var go = GameObject.Instantiate(agentmodelPrefab);
             var behavior = go.AddComponent<BoidBehavior>();
             var boid = ScriptableObject.CreateInstance<Boid>();
             boid.Initialize(1, 50, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
@@ -36,8 +38,6 @@ public class AgentFactory : MonoBehaviour
             behavior.SetAgent(boid);
             currentAgents = agents;
         }
-        Debug.Log(currentAgents.Count);
-
     }
     [ContextMenu("Destroy")]
     public void Destroy()

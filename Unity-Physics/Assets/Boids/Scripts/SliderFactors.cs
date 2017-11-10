@@ -10,6 +10,7 @@ public class SliderFactors : MonoBehaviour
     public Slider SeperationSlider;
     public Slider AlignmentSlider;
     public Slider WanderSlider;
+    public Slider MaxSpeedSlider;
     // Use this for initialization
     void Start()
     {
@@ -17,6 +18,7 @@ public class SliderFactors : MonoBehaviour
         SeperationSlider.value = AgentFactory.sFactor;
         AlignmentSlider.value = AgentFactory.aFactor;
         WanderSlider.value = AgentFactory.wFactor;
+        
     }
 
     // Update is called once per frame
@@ -49,6 +51,15 @@ public class SliderFactors : MonoBehaviour
                 AgentFactory.wFactor = (int)WanderSlider.value;
                 break;
             }
+            case "speed":
+            {
+                foreach (var currentAgent in AgentFactory.currentAgents)
+                {
+                    currentAgent.maxSpeed = MaxSpeedSlider.value;
+                }
+                break;
+            }
         }
+
     }
 }

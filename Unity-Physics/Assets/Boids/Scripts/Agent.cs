@@ -17,7 +17,7 @@ namespace Max
         [SerializeField]
         protected Vector3 velocity, acceleration, position;
         [SerializeField]
-        protected float maxSpeed = 10;
+        public float maxSpeed = 10;
 
         public abstract Vector3 Update_Agent();
 
