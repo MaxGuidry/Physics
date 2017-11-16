@@ -37,7 +37,7 @@ namespace Max
             SphereCollider col = this.GetComponent<SphereCollider>();
             if (col == null)
                 col = this.gameObject.AddComponent<SphereCollider>();
-            col.radius = 5;
+            col.radius = 2;
             col.isTrigger = true;
             Rigidbody rb = this.GetComponent<Rigidbody>();
             if (rb == null)
@@ -57,7 +57,7 @@ namespace Max
         // Update is called once per frame
         void Update()
         {
-            //(a as Boid).neighbors = AgentFactory.GetAgents(typeof(Boid));
+            //(a as Boid).neighbors = AgentFactory.currentAgents; //AgentFactory.GetAgents(typeof(Boid));
             Vector3 c = .5f * AgentFactory.cFactor * (a as Boid).Cohesion();
             Debug.DrawLine(this.transform.position, this.transform.position + c.normalized * 2, Color.blue);
             Vector3 s = .5f * AgentFactory.sFactor * (a as Boid).Seperation();
@@ -67,7 +67,7 @@ namespace Max
             Vector3 w = .5f * AgentFactory.wFactor * (a as Boid).Wander();
             a.Add_Force(c + s + al + w);
             //this.transform.LookAt(this.transform.position + (a as Boid).GetVelocity());
-            this.transform.forward = (a as Boid).GetVelocity().normalized;
+            this.transform.up = (a as Boid).GetVelocity().normalized;
 
         }
 
@@ -83,8 +83,8 @@ namespace Max
             if (Input.GetKeyDown(KeyCode.Space))
                 thread = false;
             this.transform.position = a.Update_Agent();
-            if (this.transform.position.magnitude > 5)
-                a.Add_Force(50 * (a as Boid).GetPosition().magnitude - 4, -a.GetPosition());
+            if (this.transform.position.magnitude > 50)
+                a.Add_Force(50 * (a as Boid).GetPosition().magnitude, -a.GetPosition());
         }
 
         void OnTriggerEnter(Collider other)

@@ -109,7 +109,10 @@ namespace Max
 
         public Vector3 Wander()
         {
-            return (new Vector3(Mathf.Cos(Random.Range(0,170)), Mathf.Cos(Random.Range(0, 170)), Mathf.Cos(Random.Range(0, 170))).normalized * .1f * (velocity.magnitude+1f));
+            //return (new Vector3(Mathf.Cos(Random.Range(0,170)), Mathf.Cos(Random.Range(0, 170)), Mathf.Cos(Random.Range(0, 170))).normalized * .1f * (velocity.magnitude+1f));
+            //new Vector3(Mathf.Cos(Random.Range(0, 170)), Mathf.Cos(Random.Range(0, 170)), Mathf.Cos(Random.Range(0, 170))) + position
+            return velocity.normalized + new Vector3(Mathf.Cos(Random.Range(-60, 60)), Mathf.Cos(Random.Range(-60, 60)),
+                       Mathf.Cos(Random.Range(-60, 60))).normalized * 5;
         }
 
         public Vector3 GetVelocity()
