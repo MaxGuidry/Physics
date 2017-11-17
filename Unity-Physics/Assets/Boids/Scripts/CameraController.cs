@@ -33,13 +33,18 @@ public class CameraController : MonoBehaviour
             }
         }
         if (!target)
+        {
+            //Quaternion q = this.transform.rotation;
+            //this.transform.LookAt(a.GetPosition());
+            //this.transform.rotation = Quaternion.Slerp(q, this.transform.rotation, .1f);
             this.transform.LookAt(a.GetPosition());
+        }
         else
         {
-            Quaternion q = this.transform.rotation;
+            //Quaternion q = this.transform.rotation;
+            //this.transform.LookAt(target);
+            //this.transform.rotation = Quaternion.Slerp(q, this.transform.rotation, .1f);
             this.transform.LookAt(target);
-            this.transform.rotation = Quaternion.Slerp(q, this.transform.rotation, .1f);
-
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");

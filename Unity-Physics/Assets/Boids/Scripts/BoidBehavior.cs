@@ -33,15 +33,15 @@ namespace Max
         // Use this for initialization
         void Start()
         {
-            SphereCollider col = this.GetComponent<SphereCollider>();
-            if (col == null)
-                col = this.gameObject.AddComponent<SphereCollider>();
-            col.radius = 2;
-            col.isTrigger = true;
-            Rigidbody rb = this.GetComponent<Rigidbody>();
-            if (rb == null)
-                rb = this.gameObject.AddComponent<Rigidbody>();
-            rb.useGravity = false;
+            //SphereCollider col = this.GetComponent<SphereCollider>();
+            //if (col == null)
+            //    col = this.gameObject.AddComponent<SphereCollider>();
+            //col.radius = 2;
+            //col.isTrigger = true;
+            //Rigidbody rb = this.GetComponent<Rigidbody>();
+            //if (rb == null)
+            //    rb = this.gameObject.AddComponent<Rigidbody>();
+            //rb.useGravity = false;
 
             //foreach (BoidBehavior boid in GameObject.FindObjectsOfType<AgentBehavior>())
             //{
@@ -56,7 +56,23 @@ namespace Max
         // Update is called once per frame
         void Update()
         {
+            //foreach (Boid boid in AgentFactory.currentAgents)
+            //{
+            //    if (this.a == boid)
+            //        continue;
+            //    if ((boid.GetPosition() - a.GetPosition()).magnitude < 4 && !(a as Boid).neighbors.Contains(boid as Boid))
+            //        (a as Boid).AddNeighbor(boid as Boid);
+            //    else if((a as Boid).neighbors.Contains(boid as Boid))
+            //        (a as Boid).RemoveNeighbor(boid as Boid);
+
+            //}
             //(a as Boid).neighbors = AgentFactory.currentAgents; //AgentFactory.GetAgents(typeof(Boid));
+
+            var neighbors = new List<Agent>();
+            var agentss = AgentFactory.currentAgents.FindAll(x => x != a && Vector3.Distance(x.GetPosition(), a.GetPosition()) < 4);
+            agentss.ForEach(a => neighbors.Add(a as Boid));
+            (a as Boid).neighbors = neighbors;
+
             Vector3 c = .5f * AgentFactory.cFactor * (a as Boid).Cohesion();
             Debug.DrawLine(this.transform.position, this.transform.position + c.normalized * 2, Color.blue);
             Vector3 s = .5f * AgentFactory.sFactor * (a as Boid).Seperation();
@@ -79,29 +95,29 @@ namespace Max
         {
             //if (AgentFactory.currentAgents.Count != 0)
             //    Debug.Log(AgentFactory.currentAgents[0].maxSpeed);
-          
+
             this.transform.position = a.Update_Agent();
-            if (this.transform.position.magnitude > 50)
+            if (this.transform.position.magnitude > AgentFactory.bounds)
                 a.Add_Force(50 * (a as Boid).GetPosition().magnitude, -a.GetPosition());
         }
 
-        void OnTriggerEnter(Collider other)
-        {
-            BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
-            if (bh != null)
-                (a as Boid).AddNeighbor(bh.a as Boid);
-        }
+        //void OnTriggerEnter(Collider other)
+        //{
+        //    BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
+        //    if (bh != null)
+        //        (a as Boid).AddNeighbor(bh.a as Boid);
+        //}
 
-        void OnTriggerExit(Collider other)
-        {
-            BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
-            if (bh != null)
-                (a as Boid).RemoveNeighbor(bh.a as Boid);
-        }
+        //void OnTriggerExit(Collider other)
+        //{
+        //    BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
+        //    if (bh != null)
+        //        (a as Boid).RemoveNeighbor(bh.a as Boid);
+        //}
 
-        void OnMouseDown()
-        {
-            //Camera.main.GetComponent<CameraController>().target = this.transform;
-        }
+        //void OnMouseDown()
+        //{
+        //    //Camera.main.GetComponent<CameraController>().target = this.transform;
+        //}
     }
 }
