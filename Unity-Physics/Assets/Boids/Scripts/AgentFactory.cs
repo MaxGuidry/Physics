@@ -30,7 +30,9 @@ public class AgentFactory : MonoBehaviour
            // var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             var go = GameObject.Instantiate(agentmodelPrefab);
             MeshRenderer r = go.GetComponent<MeshRenderer>();
-            r.material.color = Random.ColorHSV();
+            //r.material.color = Random.ColorHSV();
+            r.material.color = Color.clear;
+            
             var behavior = go.AddComponent<BoidBehavior>();
             var boid = ScriptableObject.CreateInstance<Boid>();
             boid.Initialize(1, 50, new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
