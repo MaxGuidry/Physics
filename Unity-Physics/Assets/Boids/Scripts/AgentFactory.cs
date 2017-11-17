@@ -28,6 +28,11 @@ public class AgentFactory : MonoBehaviour
            // var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             var go = GameObject.Instantiate(agentmodelPrefab);
             MeshRenderer r = go.GetComponent<MeshRenderer>();
+            var mc = go.AddComponent<MeshCollider>();
+            mc.convex = true;
+            mc.isTrigger = true;
+            mc.inflateMesh = true;
+            mc.skinWidth = .2f;
             //r.material.color = Random.ColorHSV();
             r.material.color = Color.clear;
             

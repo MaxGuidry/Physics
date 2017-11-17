@@ -12,7 +12,6 @@ namespace Max
     public class BoidBehavior : AgentBehavior
     {
         private Thread t;
-        private bool thread = true;
         public void SetAgent(Agent agent)
         {
 
@@ -80,8 +79,7 @@ namespace Max
         {
             //if (AgentFactory.currentAgents.Count != 0)
             //    Debug.Log(AgentFactory.currentAgents[0].maxSpeed);
-            if (Input.GetKeyDown(KeyCode.Space))
-                thread = false;
+          
             this.transform.position = a.Update_Agent();
             if (this.transform.position.magnitude > 50)
                 a.Add_Force(50 * (a as Boid).GetPosition().magnitude, -a.GetPosition());
@@ -99,6 +97,11 @@ namespace Max
             BoidBehavior bh = other.gameObject.GetComponent<BoidBehavior>();
             if (bh != null)
                 (a as Boid).RemoveNeighbor(bh.a as Boid);
+        }
+
+        void OnMouseDown()
+        {
+            //Camera.main.GetComponent<CameraController>().target = this.transform;
         }
     }
 }
