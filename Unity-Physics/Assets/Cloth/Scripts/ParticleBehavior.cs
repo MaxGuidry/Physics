@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Cloth
 {
@@ -16,7 +17,7 @@ namespace Cloth
 
         public bool isAnchor;
         // Use this for initialization
-        void Start()
+        void OnEnable()
         {
             p = new Particle(this.transform.position, Vector3.zero, 1);
             p.anchorx = anchorx;
@@ -41,6 +42,11 @@ namespace Cloth
             p.position = transform.position;
             p.Update(Time.deltaTime);
             transform.position = p.position;
+        }
+
+        public void OnMouseDrag()
+        {
+            this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 }

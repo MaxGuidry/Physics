@@ -85,8 +85,7 @@ namespace Cloth
             this.b = b;
             k = ks;
             l = Vector3.Distance(a.position, b.position);
-            Debug.Log(l);
-           // l *= lo;
+     
         }
 
     }

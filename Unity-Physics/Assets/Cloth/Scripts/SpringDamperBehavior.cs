@@ -24,9 +24,15 @@ namespace Cloth
         void Update()
         {
             //spring(springConstant,restLength);
-           // Debug.DrawLine(a.p.position,b.p.position);
+           //Debug.DrawLine(a.p.position,b.p.position);
         }
 
+        public bool Break()
+        {
+            if ((b.p.position - a.p.position).magnitude > 10f * sd.l)
+                return true;
+            return false;
+        }
         public void spring(float springK,float restL)
         {
             sd.k = springK;
@@ -37,8 +43,8 @@ namespace Cloth
                 Vector3 dir = -(b.p.position - a.p.position).normalized;
                 float dist = (b.p.position - a.p.position).magnitude;
                 var springForce = -sd.k * (dist - sd.l) * dir;
-                var dampForcea = -a.p.velocity * .25f;
-                var dampForceb = -b.p.velocity * .25f;
+                var dampForcea = -a.p.velocity * Kd;
+                var dampForceb = -b.p.velocity * Kd;
                 a.p.AddForce(springForce + dampForcea);
                 b.p.AddForce(-springForce + dampForceb);
             }
@@ -51,7 +57,7 @@ namespace Cloth
                 float v1 = Vector3.Dot(e, a.p.velocity);
                 float v2 = Vector3.Dot(e, b.p.velocity);
 
-                float fsd = -sd.k * (sd.l - l) - .5f * (v1 - v2);
+                float fsd = -sd.k * (sd.l - l) - Kd * (v1 - v2);
                 Vector3 f = fsd * e;
 
                 a.p.AddForce(f);
