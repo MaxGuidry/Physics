@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0b780432cc7d24ab883fbbc5b7ee35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rowscols: 2
+  rowscols: 25
   particlePrefab: {fileID: 1961667434224690, guid: 28e78b260ca922e41a8134faef0335b1,
     type: 2}
 --- !u!114 &248668630
@@ -220,8 +220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966e86ae5bc72134ca60bfcdad4702ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ks: 10
-  lo: 1.5
+  ks: 20
+  RestCoefficient: 1
   kd: 2
 --- !u!1 &316379897
 GameObject:
@@ -264,9 +264,11 @@ MonoBehaviour:
     anchory: 0
     anchorz: 0
     gravity: 0
+    m_IsAnchor: 0
   anchorx: 0
   anchory: 0
   anchorz: 0
+  isAnchor: 0
 --- !u!23 &316379899
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -374,9 +376,11 @@ MonoBehaviour:
     anchory: 0
     anchorz: 0
     gravity: 0
+    m_IsAnchor: 0
   anchorx: 0
   anchory: 0
   anchorz: 0
+  isAnchor: 0
 --- !u!23 &481219142
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -484,9 +488,11 @@ MonoBehaviour:
     anchory: 0
     anchorz: 0
     gravity: 0
+    m_IsAnchor: 0
   anchorx: 0
   anchory: 0
   anchorz: 0
+  isAnchor: 0
 --- !u!23 &879019342
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -725,6 +731,8 @@ MonoBehaviour:
     anchory: 0
     anchorz: 0
     gravity: 0
+    m_IsAnchor: 0
   anchorx: 0
   anchory: 0
   anchorz: 0
+  isAnchor: 0
