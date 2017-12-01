@@ -10,8 +10,6 @@ public class UpdateCollision : MonoBehaviour
         X,
         Y,
         Z,
-
-
     }
     
     // Use this for initialization

@@ -16,12 +16,14 @@ namespace Cloth
         [SerializeField] private Vector3 f;
         [SerializeField] private float m;
         [HideInInspector]
-        public bool anchor;
+        public bool anchorx, anchory, anchorz, gravity;
+
+        public bool m_IsAnchor;
 
         public Vector3 position
         {
             get { return r; }
-            private set { }
+            set { r = value; }
         }
 
         public Vector3 velocity
@@ -58,14 +60,15 @@ namespace Cloth
         }
         public void Update(float deltaTime)
         {
-            if (anchor) return;
+            if (m_IsAnchor) return;
             a = f / m;
-            f = Vector3.zero;
             v = v + a * deltaTime;
             r = r + v * deltaTime;
+            f = Vector3.zero;
         }
     }
 
+    [System.Serializable]
     public class SpringDamper
     {
         public Particle a, b;
@@ -81,7 +84,9 @@ namespace Cloth
             this.a = a;
             this.b = b;
             k = ks;
-            l = lo;
+            l = Vector3.Distance(a.position, b.position);
+            Debug.Log(l);
+           // l *= lo;
         }
 
     }

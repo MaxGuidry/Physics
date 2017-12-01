@@ -1,43 +1,62 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Cloth
 {
-
-
-
     public class SpringDamperBehavior : MonoBehaviour
     {
-        private SpringDamper sd;
+        public SpringDamper sd;
         public ParticleBehavior a, b;
+        public float springConstant, restCoefficient;
+        public bool dot;
+
+        public float Kd;
         // Use this for initialization
         void Start()
         {
-            sd = new SpringDamper(a.p, b.p, 6f, 3);
+            sd = new SpringDamper(a.p, b.p, springConstant, restCoefficient);
         }
 
         // Update is called once per frame
         void Update()
         {
-            
-
-            spring();
+            //spring(springConstant,restLength);
+           // Debug.DrawLine(a.p.position,b.p.position);
         }
 
-        public void spring()
+        public void spring(float springK,float restL)
         {
-            
-            Vector3 dir = -(b.p.position - a.p.position).normalized;
-            float dist = (b.p.position - a.p.position).magnitude;
-            a.p.AddForce(-sd.k * (dist - sd.l) * dir);
-            dir = -(a.p.position - b.p.position).normalized;
-            dist = (a.p.position - b.p.position).magnitude;
-            b.p.AddForce(-sd.k * (dist - sd.l) * dir);
-            a.p.AddForce(-a.p.velocity * .5f);
-            b.p.AddForce(-b.p.velocity * .5f);
+            sd.k = springK;
+            //sd.l = restL;
+            dot = true;
+            if (!dot)
+            {
+                Vector3 dir = -(b.p.position - a.p.position).normalized;
+                float dist = (b.p.position - a.p.position).magnitude;
+                var springForce = -sd.k * (dist - sd.l) * dir;
+                var dampForcea = -a.p.velocity * .25f;
+                var dampForceb = -b.p.velocity * .25f;
+                a.p.AddForce(springForce + dampForcea);
+                b.p.AddForce(-springForce + dampForceb);
+            }
+            else
+            {
+                Vector3 ep = (b.p.position - a.p.position);
+                float l = ep.magnitude;
+                Vector3 e = ep / l;
 
+                float v1 = Vector3.Dot(e, a.p.velocity);
+                float v2 = Vector3.Dot(e, b.p.velocity);
+
+                float fsd = -sd.k * (sd.l - l) - .5f * (v1 - v2);
+                Vector3 f = fsd * e;
+
+                a.p.AddForce(f);
+                b.p.AddForce(-f);
+            }
         }
     }
 }

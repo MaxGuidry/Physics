@@ -9,27 +9,36 @@ namespace Cloth
 
     public class ParticleBehavior : MonoBehaviour
     {
-
+        public bool gravity = true;
         public Particle p;
 
-        public bool anchor;
+        public bool anchorx,anchory,anchorz;
+
+        public bool isAnchor;
         // Use this for initialization
         void Start()
         {
             p = new Particle(this.transform.position, Vector3.zero, 1);
-            p.anchor = anchor;
+            p.anchorx = anchorx;
+            p.anchory = anchory;
+            p.anchorz = anchorz;
+
         }
 
         // Update is called once per frame
         void Update()
         {
-            p.anchor = anchor;
-
+            p.gravity = gravity;
+            p.anchorx = anchorx;
+            p.anchory = anchory;
+            p.anchorz = anchorz;
+            p.m_IsAnchor = isAnchor;
             // p.AddForce(Vector3.right);
         }
 
-        void FixedUpdate()
+        public void UpdateParticle()
         {
+            p.position = transform.position;
             p.Update(Time.deltaTime);
             transform.position = p.position;
         }
