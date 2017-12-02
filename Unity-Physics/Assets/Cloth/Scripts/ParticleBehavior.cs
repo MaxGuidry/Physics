@@ -44,9 +44,13 @@ namespace Cloth
             transform.position = p.position;
         }
 
-        public void OnMouseDrag()
+        void OnMouseDrag()
         {
-            this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, p.position.z);
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+            this.transform.position = objPosition;
+            p.position = objPosition;
         }
     }
 }

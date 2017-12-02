@@ -57,7 +57,7 @@ namespace Cloth
                 float v1 = Vector3.Dot(e, a.p.velocity);
                 float v2 = Vector3.Dot(e, b.p.velocity);
 
-                float fsd = -sd.k * (sd.l - l) - Kd * (v1 - v2);
+                float fsd = -sd.k * (restL - l) - Kd * (v1 - v2);
                 Vector3 f = fsd * e;
 
                 a.p.AddForce(f);

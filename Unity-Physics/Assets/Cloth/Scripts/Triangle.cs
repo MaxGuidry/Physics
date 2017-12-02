@@ -38,9 +38,6 @@ namespace Cloth
             p3.AddForce(f/3f);
         }
 
-        public void CheckCollision()
-        {
-            
-        }
+      
     }
 }

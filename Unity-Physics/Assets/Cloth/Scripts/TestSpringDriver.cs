@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cloth;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class TestSpringDriver : MonoBehaviour
 {
@@ -65,10 +66,10 @@ public class TestSpringDriver : MonoBehaviour
         foreach (var sdb in sdbs)
         {
             // Debug.Log(sdb.sd.l * sdb.restCoefficient);
-            sdb.spring(ks, sdb.sd.l);
+            sdb.spring(ks, sdb.sd.l * sdb.restCoefficient);
             if (sdb.Break())
             {
-               removes.Add(sdb);
+                removes.Add(sdb);
             }
         }
         foreach (var r in removes)
@@ -81,7 +82,7 @@ public class TestSpringDriver : MonoBehaviour
         {
             pb.UpdateParticle();
         }
-        
+
     }
 
     void CreateCloth()
@@ -93,7 +94,7 @@ public class TestSpringDriver : MonoBehaviour
             for (int j = 0; j < rowscols; j++)
             {
                 GameObject go =
-                    GameObject.Instantiate(particlePrefab, new Vector3((float)i / .5f, (float)j / .5f, 0), Quaternion.identity);
+                    GameObject.Instantiate(particlePrefab, new Vector3((float)i / 1f, 10, (float)j / 1f), Quaternion.identity);
                 if (go == null)
                     Debug.Break();
                 //DestroyImmediate(go.GetComponent<Renderer>());
@@ -110,6 +111,10 @@ public class TestSpringDriver : MonoBehaviour
         {
             if (i < rowscols)
                 parts[i].isAnchor = true;
+            //parts[0].isAnchor = true;
+            //parts[rowscols - 1].isAnchor = true;
+            //parts[rowscols * rowscols - rowscols].isAnchor = true;
+            //parts[rowscols * rowscols - 1].isAnchor = true;
             if (i > (rowscols * (rowscols - 1)) - 1)
             {
                 GameObject go = new GameObject();
@@ -212,12 +217,12 @@ public class TestSpringDriver : MonoBehaviour
             Gust = true;
         if (Gust)
         {
-            
-            wind *= Random.Range(3,12);
+
+            wind *= Random.Range(3, 12);
             counter += Time.deltaTime;
         }
-       
-        wind += new Vector3(Random.Range(-2,2), Random.Range(-1,1), Random.Range(-2,2)) * 1f;
+
+        wind += new Vector3(Random.Range(-2, 2), Random.Range(-1, 1), Random.Range(-2, 2)) * .5f;
         if (counter > .5f)
         {
             counter = 0;
