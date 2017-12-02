@@ -208,10 +208,10 @@ MonoBehaviour:
   particlePrefab: {fileID: 1961667434224690, guid: 28e78b260ca922e41a8134faef0335b1,
     type: 2}
   rowscols: 20
-  ks: 50
+  ks: 80
   RestCoefficient: 1
   kd: 0.25
-  Wind: {x: 10, y: 0, z: 10}
+  Wind: {x: 0, y: 0, z: 0}
   GustyWind: 0
 --- !u!1 &765010272
 GameObject:
@@ -291,7 +291,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 765010272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.41, y: 4.18, z: 19.4}
+  m_LocalPosition: {x: 8.07, y: 1.7, z: 11.29}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
