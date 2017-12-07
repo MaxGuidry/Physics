@@ -40,17 +40,9 @@ namespace Cloth
         public void UpdateParticle()
         {
             p.position = transform.position;
-            p.Update(Time.deltaTime);
+            p.Update(Time.fixedDeltaTime);
             transform.position = p.position;
         }
 
-        void OnMouseDrag()
-        {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, p.position.z);
-            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-            this.transform.position = objPosition;
-            p.position = objPosition;
-        }
     }
 }

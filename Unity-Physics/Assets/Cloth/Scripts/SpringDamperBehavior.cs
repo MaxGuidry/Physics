@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Cloth
@@ -10,12 +9,21 @@ namespace Cloth
     {
         public SpringDamper sd;
         public ParticleBehavior a, b;
-        public float springConstant, restCoefficient;
+        public static float springConstant;
+        public float restCoefficient;
         public bool dot;
 
         public float Kd;
+
         // Use this for initialization
         void Start()
+        {
+            if (!a || !b)
+                return;
+            sd = new SpringDamper(a.p, b.p, springConstant, restCoefficient);
+        }
+
+        public void Init()
         {
             sd = new SpringDamper(a.p, b.p, springConstant, restCoefficient);
         }
@@ -24,16 +32,18 @@ namespace Cloth
         void Update()
         {
             //spring(springConstant,restLength);
-           Debug.DrawLine(a.p.position,b.p.position);
+#if UNITY_EDITOR
+            Debug.DrawLine(a.p.position, b.p.position);
+#endif
         }
 
         public bool Break()
         {
-            if ((b.p.position - a.p.position).magnitude > 10f * sd.l)
+            if ((b.p.position - a.p.position).magnitude > 3.5f * sd.l)
                 return true;
             return false;
         }
-        public void spring(float springK,float restL)
+        public void spring(float springK, float restL)
         {
             sd.k = springK;
             //sd.l = restL;

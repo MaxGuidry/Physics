@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -71,8 +72,17 @@ namespace Cloth
             //CheckCollision();
             a = f / m;
             v = v + a * deltaTime;
+            if (v.magnitude > 75)
+                v = v.normalized * 75;
             r = r + v * deltaTime;
+            if (Single.IsInfinity(r.x) || Single.IsInfinity(r.y) || Single.IsInfinity(r.z))
+                r = Vector3.zero;
+            if (Single.IsNaN(r.x) || Single.IsNaN(r.y) || Single.IsNaN(r.z))
+                r = Vector3.zero;
+
             f = Vector3.zero;
+            if (r.y <= 0)
+                r.y = 0;
         }
 
 
