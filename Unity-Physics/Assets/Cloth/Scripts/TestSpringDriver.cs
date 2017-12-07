@@ -65,8 +65,7 @@ public class TestSpringDriver : MonoBehaviour
         List<SpringDamperBehavior> removes = new List<SpringDamperBehavior>();
         foreach (var sdb in sdbs)
         {
-            // Debug.Log(sdb.sd.l * sdb.restCoefficient);
-            sdb.spring(ks, sdb.sd.l * sdb.restCoefficient);
+            sdb.spring(ks, sdb.sd.l);
             if (sdb.Break())
             {
                 removes.Add(sdb);
@@ -77,6 +76,11 @@ public class TestSpringDriver : MonoBehaviour
             if (sdbs.Contains(r))
                 sdbs.Remove(r);
             DestroyImmediate(r.gameObject);
+        }
+        foreach (var triangle in tris)
+        {
+
+            triangle.CheckCollision();
         }
         foreach (var pb in parts)
         {
@@ -94,10 +98,10 @@ public class TestSpringDriver : MonoBehaviour
             for (int j = 0; j < rowscols; j++)
             {
                 GameObject go =
-                    GameObject.Instantiate(particlePrefab, new Vector3((float)i / 1f, 10, (float)j / 1f), Quaternion.identity);
+                    GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, 10, (float)j * RestCoefficient), Quaternion.identity);
                 if (go == null)
                     Debug.Break();
-                //DestroyImmediate(go.GetComponent<Renderer>());
+                DestroyImmediate(go.GetComponent<Renderer>());
                 ParticleBehavior pb = go.GetComponent<ParticleBehavior>();
                 if (pb == null)
                     Debug.Break();

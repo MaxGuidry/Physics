@@ -24,7 +24,7 @@ namespace Cloth
         void Update()
         {
             //spring(springConstant,restLength);
-           //Debug.DrawLine(a.p.position,b.p.position);
+           Debug.DrawLine(a.p.position,b.p.position);
         }
 
         public bool Break()

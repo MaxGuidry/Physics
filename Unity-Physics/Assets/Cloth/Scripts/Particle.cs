@@ -50,7 +50,7 @@ namespace Cloth
             get { return m; }
             private set { }
         }
-        List<Collider> gos = new List<Collider>();
+        public static List<Collider> gos = new List<Collider>();
         public Particle(Vector3 pos, Vector3 velo, float mass)
         {
             r = pos;
@@ -68,36 +68,14 @@ namespace Cloth
         public void Update(float deltaTime)
         {
             if (m_IsAnchor) return;
-            CheckCollision();
+            //CheckCollision();
             a = f / m;
             v = v + a * deltaTime;
             r = r + v * deltaTime;
             f = Vector3.zero;
         }
 
-        public bool CheckCollision()
-        {
 
-            foreach (var collider in gos)
-            {
-                BoxCollider box = collider.gameObject.GetComponent<BoxCollider>();
-                if (box)
-                {
-                    continue;
-                }
-                SphereCollider sp = collider.gameObject.GetComponent<SphereCollider>();
-                if (sp)
-                {
-                    if (Vector3.Distance(r, sp.transform.position) < sp.radius * sp.transform.localScale.x)
-                    {
-                        var dir = (r - sp.transform.position).normalized;
-                        //AddForce(dir * velocity.magnitude*(Vector3.Dot(-f.normalized,dir.normalized)*f.magnitude));
-                        AddForce(dir * velocity.magnitude * 100f);
-                    }
-                }
-            }
-            return true;
-        }
     }
 
     [System.Serializable]
