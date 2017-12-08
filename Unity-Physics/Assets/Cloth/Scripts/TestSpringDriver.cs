@@ -18,11 +18,14 @@ public class TestSpringDriver : MonoBehaviour
     private List<SpringDamperBehavior> sdbs = new List<SpringDamperBehavior>();
     private List<ParticleBehavior> parts = new List<ParticleBehavior>();
     private List<Triangle> tris = new List<Triangle>();
+
+    public Material cloth;
     // Use this for initialization
     void Start()
     {
         CreateCloth();
         Triangles();
+        mesh();
     }
 
     public void ResetCloth()
@@ -45,24 +48,25 @@ public class TestSpringDriver : MonoBehaviour
         {
             sd.Init();
         }
+        mesh();
     }
     void Triangles()
     {
         sdbs = FindObjectsOfType<SpringDamperBehavior>().ToList();
-        for (int i = 0; i < ((int)rowscols * (int)rowscols) - (int)rowscols; i++)
+        for (int i = 0; i < ((int)(int)rowscols * (int)(int)rowscols) - (int)(int)rowscols; i++)
         {
-            if (i % (int)rowscols == 0)
+            if (i % (int)(int)rowscols == 0)
             {
-                tris.Add(new Triangle(parts[i].p, parts[i + 1].p, parts[i + (int)rowscols].p));
+                tris.Add(new Triangle(parts[i].p, parts[i + 1].p, parts[i + (int)(int)rowscols].p));
             }
-            else if ((i + 1) % (int)rowscols == 0)
+            else if ((i + 1) % (int)(int)rowscols == 0)
             {
-                tris.Add(new Triangle(parts[i].p, parts[i + (int)rowscols].p, parts[i + (int)rowscols - 1].p));
+                tris.Add(new Triangle(parts[i].p, parts[i + (int)(int)rowscols].p, parts[i + (int)(int)rowscols - 1].p));
             }
             else
             {
-                tris.Add(new Triangle(parts[i].p, parts[i + (int)rowscols].p, parts[i + (int)rowscols - 1].p));
-                tris.Add(new Triangle(parts[i].p, parts[i + (int)rowscols].p, parts[i + (int)rowscols + 1].p));
+                tris.Add(new Triangle(parts[i].p, parts[i + (int)(int)rowscols].p, parts[i + (int)(int)rowscols - 1].p));
+                tris.Add(new Triangle(parts[i].p, parts[i + (int)(int)rowscols].p, parts[i + (int)(int)rowscols + 1].p));
             }
         }
     }
@@ -121,10 +125,10 @@ public class TestSpringDriver : MonoBehaviour
     void CreateCloth()
     {
 
-        ParticleBehavior[] ps = new ParticleBehavior[(int)((int)rowscols * (int)rowscols)];
-        for (int i = 0; i < (int)rowscols; i++)
+        ParticleBehavior[] ps = new ParticleBehavior[(int)((int)(int)rowscols * (int)(int)rowscols)];
+        for (int i = 0; i < (int)(int)rowscols; i++)
         {
-            for (int j = 0; j < (int)rowscols; j++)
+            for (int j = 0; j < (int)(int)rowscols; j++)
             {
                 GameObject go =
                     GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, 10, (float)j * RestCoefficient), Quaternion.identity);
@@ -135,20 +139,20 @@ public class TestSpringDriver : MonoBehaviour
                 if (pb == null)
                     Debug.Break();
 
-                ps[(i * (int)rowscols) + j] = pb;
+                ps[(i * (int)(int)rowscols) + j] = pb;
             }
         }
         parts.AddRange(ps);
-        // for (int i = 0; i < (((int)rowscols * (int)rowscols) + ((int)rowscols * ((int)rowscols - 2))); i++)
-        for (int i = 0; i < ((int)rowscols * (int)rowscols) - 1; i++)
+        // for (int i = 0; i < (((int)(int)rowscols * (int)(int)rowscols) + ((int)(int)rowscols * ((int)(int)rowscols - 2))); i++)
+        for (int i = 0; i < ((int)(int)rowscols * (int)(int)rowscols) - 1; i++)
         {
-            if (i < (int)rowscols)
+            if (i < (int)(int)rowscols)
                 parts[i].isAnchor = true;
             //parts[0].isAnchor = true;
-            //parts[(int)rowscols - 1].isAnchor = true;
-            //parts[(int)rowscols * (int)rowscols - (int)rowscols].isAnchor = true;
-            //parts[(int)rowscols * (int)rowscols - 1].isAnchor = true;
-            if (i > ((int)rowscols * ((int)rowscols - 1)) - 1)
+            //parts[(int)(int)rowscols - 1].isAnchor = true;
+            //parts[(int)(int)rowscols * (int)(int)rowscols - (int)(int)rowscols].isAnchor = true;
+            //parts[(int)(int)rowscols * (int)(int)rowscols - 1].isAnchor = true;
+            if (i > ((int)(int)rowscols * ((int)(int)rowscols - 1)) - 1)
             {
                 GameObject go = new GameObject();
                 SpringDamperBehavior sdb = go.AddComponent<SpringDamperBehavior>();
@@ -156,7 +160,7 @@ public class TestSpringDriver : MonoBehaviour
                 sdb.a = parts[i];
                 sdb.b = parts[i + 1];
             }
-            else if (i % (int)rowscols == 0)
+            else if (i % (int)(int)rowscols == 0)
             {
                 GameObject go = new GameObject();
                 SpringDamperBehavior sdb = go.AddComponent<SpringDamperBehavior>();
@@ -167,14 +171,14 @@ public class TestSpringDriver : MonoBehaviour
                 SpringDamperBehavior sdb2 = go2.AddComponent<SpringDamperBehavior>();
                 //sdb2.dot = true;
                 sdb2.a = parts[i];
-                sdb2.b = parts[i + 1 + (int)rowscols];
+                sdb2.b = parts[i + 1 + (int)(int)rowscols];
                 GameObject go3 = new GameObject();
                 SpringDamperBehavior sdb3 = go3.AddComponent<SpringDamperBehavior>();
                 //sdb3.dot = true;
                 sdb3.a = parts[i];
-                sdb3.b = parts[i + (int)rowscols];
+                sdb3.b = parts[i + (int)(int)rowscols];
             }
-            else if ((i + 1) % (int)rowscols == 0)
+            else if ((i + 1) % (int)(int)rowscols == 0)
             {
                 // parts[i].isAnchor = true;
                 // parts[i].anchorx = true;
@@ -185,12 +189,12 @@ public class TestSpringDriver : MonoBehaviour
                 SpringDamperBehavior sdb = go.AddComponent<SpringDamperBehavior>();
                 //sdb.dot = true;
                 sdb.a = parts[i];
-                sdb.b = parts[i + (int)rowscols];
+                sdb.b = parts[i + (int)(int)rowscols];
                 GameObject go2 = new GameObject();
                 SpringDamperBehavior sdb2 = go2.AddComponent<SpringDamperBehavior>();
                 //sdb2.dot = true;
                 sdb2.a = parts[i];
-                sdb2.b = parts[i - 1 + (int)rowscols];
+                sdb2.b = parts[i - 1 + (int)(int)rowscols];
             }
             else
             {
@@ -204,21 +208,21 @@ public class TestSpringDriver : MonoBehaviour
                 SpringDamperBehavior sdb2 = go2.AddComponent<SpringDamperBehavior>();
                 //sdb2.dot = true;
                 sdb2.a = parts[i];
-                sdb2.b = parts[i + 1 + (int)rowscols];
+                sdb2.b = parts[i + 1 + (int)(int)rowscols];
                 GameObject go3 = new GameObject();
                 SpringDamperBehavior sdb3 = go3.AddComponent<SpringDamperBehavior>();
                 //sdb3.dot = true;
                 sdb3.a = parts[i];
-                sdb3.b = parts[i + (int)rowscols];
+                sdb3.b = parts[i + (int)(int)rowscols];
                 GameObject go4 = new GameObject();
                 SpringDamperBehavior sdb4 = go4.AddComponent<SpringDamperBehavior>();
                 //sdb4.dot = true;
                 sdb4.a = parts[i];
-                sdb4.b = parts[i + (int)rowscols - 1];
+                sdb4.b = parts[i + (int)(int)rowscols - 1];
             }
             //sdb.a = parts[i % rc];
             //sdb.b = parts[i];
-            if ((i + 2 < (int)rowscols * (int)rowscols) && (i + 2) % (int)rowscols > i % (int)rowscols)
+            if ((i + 2 < (int)(int)rowscols * (int)(int)rowscols) && (i + 2) % (int)(int)rowscols > i % (int)(int)rowscols)
             {
                 GameObject go = new GameObject();
                 SpringDamperBehavior sdb = go.AddComponent<SpringDamperBehavior>();
@@ -226,13 +230,13 @@ public class TestSpringDriver : MonoBehaviour
                 sdb.a = parts[i];
                 sdb.b = parts[i + 2];
             }
-            if ((i + (int)rowscols * 2f < (int)rowscols * (int)rowscols))
+            if ((i + (int)(int)rowscols * 2f < (int)(int)rowscols * (int)(int)rowscols))
             {
                 GameObject go = new GameObject();
                 SpringDamperBehavior sdb = go.AddComponent<SpringDamperBehavior>();
                 //sdb.dot = true;
                 sdb.a = parts[i];
-                sdb.b = parts[i + (int)rowscols * 2];
+                sdb.b = parts[i + (int)(int)rowscols * 2];
             }
         }
         //parts[parts.Count - 1].isAnchor = true;
@@ -262,6 +266,63 @@ public class TestSpringDriver : MonoBehaviour
             Gust = false;
         }
         return wind;
+
+    }
+    void mesh()
+    {
+        GameObject go = new GameObject();
+        go.name = "YOOOOOOO";
+        Mesh m = new Mesh();
+        m.name = "Max";
+
+        var vertices = new Vector3[(int)rowscols * (int)rowscols];
+        var colors = new Color[(int)rowscols * (int)rowscols];
+
+        for (int i = 0; i < (int)rowscols * (int)rowscols - 1; ++i)
+        {            
+            vertices[i] = parts[i].p.position;
+            colors[i] = Color.blue;
+        }
+        m.vertices = vertices;
+        m.colors = colors;
+
+        int index = 0;
+        var triangles = new int[((int)rowscols - 1) * ((int)rowscols - 1) * 6];
+
+        for (int r = 0; r < (rowscols - 1); ++r)
+            for (int c = 0; c < (rowscols - 1); ++c)
+            {
+                triangles[index++] = r * (int)rowscols + c;
+                triangles[index++] = (r + 1) * (int)rowscols + c;
+                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
+
+                triangles[index++] = r * (int)rowscols + c;
+                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
+                triangles[index++] = r * (int)rowscols + (c + 1);
+            }
+
+        m.triangles = triangles;
+        var normals = new Vector3[m.vertices.Length];
+
+        for (int i = 0; i < m.vertices.Length; i++)
+        {
+            normals[i] = new Vector3(1,0,0);
+        }
+        m.normals = normals;
+
+        index = 0;
+        m.uv = new Vector2[(int)rowscols * (int)rowscols];
+        for (int i = 0; i < rowscols; i++)
+            for (int j = 0; i < rowscols; i++)
+            {
+                m.uv[index++] = new Vector2((float)i / rowscols, (float)j / rowscols);
+            }
+
+        MeshRenderer mr = go.AddComponent<MeshRenderer>();
+        MeshFilter mf = go.AddComponent<MeshFilter>();
+        mr.material = cloth;
+        mf.mesh = m;
+
 
     }
 }
