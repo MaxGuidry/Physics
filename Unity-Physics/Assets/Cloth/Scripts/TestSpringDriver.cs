@@ -155,7 +155,7 @@ public class TestSpringDriver : MonoBehaviour
             for (int j = 0; j < (int)(int)rowscols; j++)
             {
                 GameObject go =
-                    GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, 10, (float)j * RestCoefficient), Quaternion.identity);
+                    GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, (float)j * RestCoefficient,0f), Quaternion.identity);
                 if (go == null)
                     Debug.Break();
                 DestroyImmediate(go.GetComponent<Renderer>());
@@ -170,8 +170,8 @@ public class TestSpringDriver : MonoBehaviour
         // for (int i = 0; i < (((int)(int)rowscols * (int)(int)rowscols) + ((int)(int)rowscols * ((int)(int)rowscols - 2))); i++)
         for (int i = 0; i < ((int)(int)rowscols * (int)(int)rowscols) - 1; i++)
         {
-            if (i < (int)(int)rowscols)
-                parts[i].isAnchor = true;
+              if (i < (int)(int)rowscols)
+                 parts[i].isAnchor = true;
             //parts[0].isAnchor = true;
             //parts[(int)(int)rowscols - 1].isAnchor = true;
             //parts[(int)(int)rowscols * (int)(int)rowscols - (int)(int)rowscols].isAnchor = true;
@@ -204,7 +204,7 @@ public class TestSpringDriver : MonoBehaviour
             }
             else if ((i + 1) % (int)(int)rowscols == 0)
             {
-                // parts[i].isAnchor = true;
+                //parts[i].isAnchor = true;
                 // parts[i].anchorx = true;
 
                 // parts[i].anchorz = true;

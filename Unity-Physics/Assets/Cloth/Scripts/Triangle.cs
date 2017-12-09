@@ -69,10 +69,10 @@ namespace Cloth
                         float mod = Vector3.Dot(avgVelo.normalized, -dir);
                         if (mod < 0)
                             mod = 0;
-                        else if (mod < .1f)
+                        else if (mod < .2f)
                             mod = 1f;
-                        if (accel < .2f)
-                            accel = 1f;
+                        if (accel < 1f)
+                            accel = 10f;
                         /*Vector3 POC;
                         Vector3 ContactDirection = ((p1.position - sp.transform.position) + (p1.position -
                                                    sp.transform.position) + (p1.position - sp.transform.position)).normalized;
