@@ -4,11 +4,13 @@ using System.Linq;
 using Cloth;
 using UnityEngine;
 using UnityEngine.Audio;
+using Cloth = UnityEngine.Cloth;
 
 public class TestSpringDriver : MonoBehaviour
 {
     public GameObject particlePrefab;
     public float rowscols;
+    private float currentRowsCols;
     public float ks;
 
     public float RestCoefficient;
@@ -20,9 +22,12 @@ public class TestSpringDriver : MonoBehaviour
     private List<Triangle> tris = new List<Triangle>();
 
     public Material cloth;
+
+    private GameObject clothGO;
     // Use this for initialization
     void Start()
     {
+        currentRowsCols = rowscols;
         CreateCloth();
         Triangles();
         mesh();
@@ -49,6 +54,8 @@ public class TestSpringDriver : MonoBehaviour
             sd.Init();
         }
         mesh();
+        currentRowsCols = rowscols;
+
     }
     void Triangles()
     {
@@ -86,21 +93,22 @@ public class TestSpringDriver : MonoBehaviour
             if (pb.gravity)
                 pb.p.AddForce(new Vector3(0, -9.81f, 0) * 1f);
         }
+        Vector3 wind = (GustyWind) ? GustWind() : Wind;
         foreach (var triangle in tris)
         {
             if (GustyWind)
-                triangle.AreodynamicForce(GustWind());
+                triangle.AreodynamicForce(wind);
             else
-                triangle.AreodynamicForce(Wind);
+                triangle.AreodynamicForce(wind);
         }
         List<SpringDamperBehavior> removes = new List<SpringDamperBehavior>();
         foreach (var sdb in sdbs)
         {
             sdb.spring(ks, sdb.sd.l);
-            if (sdb.Break())
-            {
-                removes.Add(sdb);
-            }
+            // if (sdb.Break())
+            //  {
+            //     removes.Add(sdb);
+            // }
         }
         foreach (var r in removes)
         {
@@ -119,9 +127,25 @@ public class TestSpringDriver : MonoBehaviour
         {
             pb.UpdateParticle();
         }
-
+        UpdateMesh();
     }
 
+    void UpdateMesh()
+    {
+        Mesh m = clothGO.GetComponent<MeshFilter>().mesh;
+        var vertices = new Vector3[(int)currentRowsCols * (int)currentRowsCols];
+        var colors = new Color[(int)currentRowsCols * (int)currentRowsCols];
+
+        for (int i = 0; i < (int)currentRowsCols * (int)currentRowsCols; ++i)
+        {
+            vertices[i] = parts[i].p.position;
+            colors[i] = Color.blue;
+        }
+        m.vertices = vertices;
+        m.colors = colors;
+        m.RecalculateNormals();
+        m.RecalculateTangents();
+    }
     void CreateCloth()
     {
 
@@ -245,81 +269,94 @@ public class TestSpringDriver : MonoBehaviour
     }
 
     private bool Gust;
-    private float counter = 0;
+    private float counter = 1;
     public Vector3 GustWind()
     {
         Vector3 wind = Wind;
-        float r = Random.Range(1, 1001);
-        if (r > 999)
+        float r = Random.Range(1, 301);
+        if (r > 299 && !Gust)
+        {
             Gust = true;
+            //Debug.Log("Gust");
+        }
         if (Gust)
         {
 
-            wind *= Random.Range(3, 12);
             counter += Time.deltaTime;
         }
-
-        wind += new Vector3(Random.Range(-2, 2), Random.Range(-1, 1), Random.Range(-2, 2)) * .5f;
-        if (counter > .5f)
+        else if (counter > 1)
         {
-            counter = 0;
+            counter -= Time.deltaTime;
+        }
+        else
+        {
+            counter = 1;
+        }
+        //wind += new Vector3(Random.Range(-2, 2), Random.Range(-1, 1), Random.Range(-2, 2)) * .5f;
+        wind *= Random.Range(1, 2) * counter;
+
+        if (counter > 2f)
+        {
             Gust = false;
+            //Debug.Log("Stop Gust");
         }
         return wind;
 
     }
     void mesh()
     {
-        GameObject go = new GameObject();
-        go.name = "YOOOOOOO";
+        if (clothGO)
+            DestroyImmediate(clothGO);
+        clothGO = new GameObject();
+        clothGO.name = "Cloth";
         Mesh m = new Mesh();
         m.name = "Max";
 
         var vertices = new Vector3[(int)rowscols * (int)rowscols];
         var colors = new Color[(int)rowscols * (int)rowscols];
 
-        for (int i = 0; i < (int)rowscols * (int)rowscols - 1; ++i)
-        {            
+        for (int i = 0; i < (int)rowscols * (int)rowscols; ++i)
+        {
             vertices[i] = parts[i].p.position;
             colors[i] = Color.blue;
         }
         m.vertices = vertices;
         m.colors = colors;
-
         int index = 0;
         var triangles = new int[((int)rowscols - 1) * ((int)rowscols - 1) * 6];
 
         for (int r = 0; r < (rowscols - 1); ++r)
             for (int c = 0; c < (rowscols - 1); ++c)
             {
-                triangles[index++] = r * (int)rowscols + c;
+                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
                 triangles[index++] = (r + 1) * (int)rowscols + c;
-                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
-
                 triangles[index++] = r * (int)rowscols + c;
-                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
+
                 triangles[index++] = r * (int)rowscols + (c + 1);
+                triangles[index++] = (r + 1) * (int)rowscols + (c + 1);
+                triangles[index++] = r * (int)rowscols + c;
             }
+
 
         m.triangles = triangles;
         var normals = new Vector3[m.vertices.Length];
 
         for (int i = 0; i < m.vertices.Length; i++)
         {
-            normals[i] = new Vector3(1,0,0);
+            normals[i] = new Vector3(1, 0, 0);
         }
         m.normals = normals;
 
         index = 0;
-        m.uv = new Vector2[(int)rowscols * (int)rowscols];
+        var uv = new Vector2[(int)rowscols * (int)rowscols];
         for (int i = 0; i < rowscols; i++)
             for (int j = 0; i < rowscols; i++)
             {
-                m.uv[index++] = new Vector2((float)i / rowscols, (float)j / rowscols);
+                uv[index++] = -new Vector2((float)i / rowscols, (float)j / rowscols);
             }
-
-        MeshRenderer mr = go.AddComponent<MeshRenderer>();
-        MeshFilter mf = go.AddComponent<MeshFilter>();
+        m.uv = uv;
+        MeshRenderer mr = clothGO.AddComponent<MeshRenderer>();
+        MeshFilter mf = clothGO.AddComponent<MeshFilter>();
         mr.material = cloth;
         mf.mesh = m;
 

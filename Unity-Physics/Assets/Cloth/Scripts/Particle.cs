@@ -85,7 +85,10 @@ namespace Cloth
                 r.y = 0;
         }
 
-
+        public void FixBallCollisionPosition(Vector3 dir, float dist)
+        {
+            r += dir.normalized * dist;
+        }
     }
 
     [System.Serializable]

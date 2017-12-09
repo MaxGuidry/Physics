@@ -39,7 +39,7 @@ namespace Cloth
 
         public void UpdateParticle()
         {
-            p.position = transform.position;
+            //p.position = transform.position;
             p.Update(Time.fixedDeltaTime);
             transform.position = p.position;
         }

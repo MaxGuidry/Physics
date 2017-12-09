@@ -33,7 +33,7 @@ namespace Cloth
         {
             //spring(springConstant,restLength);
 #if UNITY_EDITOR
-            Debug.DrawLine(a.p.position, b.p.position);
+            //Debug.DrawLine(a.p.position, b.p.position);
 #endif
         }
 

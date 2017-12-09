@@ -45,7 +45,7 @@ namespace Cloth
             Vector3 avgVelo = (p1.velocity + p2.velocity + p3.velocity) / 3f;
             foreach (var collider in Particle.gos)
             {
-                if(!collider)
+                if (!collider)
                     continue;
                 BoxCollider box = collider.gameObject.GetComponent<BoxCollider>();
                 if (box)
@@ -53,13 +53,13 @@ namespace Cloth
                     continue;
                 }
                 SphereCollider sp = collider.gameObject.GetComponent<SphereCollider>();
-                if(sp==null)
+                if (sp == null)
                     continue;
                 if (sp)
                 {
 
                     //if (Vector3.Distance(center, sp.transform.position) < sp.radius * sp.transform.localScale.x)
-                    if (Vector3.Distance(p1.position, sp.transform.position) < Vector3.Distance((p2.position + p3.position) / 2f, p1.position) + sp.radius * sp.transform.localScale.x -.1f&& Vector3.Distance(p2.position, sp.transform.position) < Vector3.Distance((p1.position + p3.position) / 2f, p2.position) + sp.radius * sp.transform.localScale.x - .1f && Vector3.Distance(p3.position, sp.transform.position) < Vector3.Distance((p1.position + p2.position) / 2f, p3.position) + sp.radius * sp.transform.localScale.x - .1f)
+                    if (Vector3.Distance(p1.position, sp.transform.position) < Vector3.Distance((p2.position + p3.position) / 2f, p1.position) + sp.radius * sp.transform.localScale.x && Vector3.Distance(p2.position, sp.transform.position) < Vector3.Distance((p1.position + p3.position) / 2f, p2.position) + sp.radius * sp.transform.localScale.x && Vector3.Distance(p3.position, sp.transform.position) < Vector3.Distance((p1.position + p2.position) / 2f, p3.position) + sp.radius * sp.transform.localScale.x)
                     {
                         var dir = (center - sp.transform.position).normalized;
                         //AddForce(dir * velocity.magnitude*(Vector3.Dot(-f.normalized,dir.normalized)*f.magnitude));
@@ -69,10 +69,31 @@ namespace Cloth
                         float mod = Vector3.Dot(avgVelo.normalized, -dir);
                         if (mod < 0)
                             mod = 0;
-                        if (mod < .1f)
-                            mod = .2f;
+                        else if (mod < .1f)
+                            mod = 1f;
                         if (accel < .2f)
                             accel = 1f;
+                        /*Vector3 POC;
+                        Vector3 ContactDirection = ((p1.position - sp.transform.position) + (p1.position -
+                                                   sp.transform.position) + (p1.position - sp.transform.position)).normalized;
+                        POC = sp.transform.position + ContactDirection *
+                              ((p1.position - sp.transform.position) + (p1.position -
+                                                                        sp.transform.position) +
+                               (p1.position - sp.transform.position)).magnitude / 3f;
+                        if (Vector3.Distance(POC, sp.transform.position) < sp.radius * sp.transform.localScale.x)
+                        {
+                            p1.FixBallCollisionPosition(p1.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p1.position, sp.transform.position) + 2f);
+                            p2.FixBallCollisionPosition(p2.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p2.position, sp.transform.position) + 2f);
+                            p3.FixBallCollisionPosition(p3.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p3.position, sp.transform.position) + 2f);
+                            Debug.Log("test fix");
+                        }
+                        if (Vector3.Distance(p1.position, sp.transform.position) < sp.radius * sp.transform.localScale.x)
+                            p1.FixBallCollisionPosition(p1.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p1.position, sp.transform.position));
+                        if (Vector3.Distance(p2.position, sp.transform.position) < sp.radius * sp.transform.localScale.x)
+                            p2.FixBallCollisionPosition(p2.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p2.position, sp.transform.position));
+                        if (Vector3.Distance(p3.position, sp.transform.position) < sp.radius * sp.transform.localScale.x)
+                            p3.FixBallCollisionPosition(p3.position - sp.transform.position, sp.radius * sp.transform.localScale.x - Vector3.Distance(p3.position, sp.transform.position));
+                            */
                         p1.AddForce((p1.position - sp.transform.position).normalized * accel * mod * 4f / 10f * Mathf.Pow(Vector3.Distance(p1.position, sp.transform.position) - sp.transform.localScale.x, 2));//(-(5*Vector3.Distance(p1.position,sp.transform.position)-Mathf.Pow(sp.transform.localScale.x,2)-sp.transform.localScale.x)+ sp.transform.localScale.x));
                         p2.AddForce((p1.position - sp.transform.position).normalized * accel * mod * 4f / 10f * Mathf.Pow(Vector3.Distance(p2.position, sp.transform.position) - sp.transform.localScale.x, 2));//(-(5*Vector3.Distance(p2.position,sp.transform.position)-Mathf.Pow(sp.transform.localScale.x,2)-sp.transform.localScale.x)+ sp.transform.localScale.x));
                         p3.AddForce((p1.position - sp.transform.position).normalized * accel * mod * 4f / 10f * Mathf.Pow(Vector3.Distance(p3.position, sp.transform.position) - sp.transform.localScale.x, 2));//(-(5*Vector3.Distance(p3.position,sp.transform.position)-Mathf.Pow(sp.transform.localScale.x,2)-sp.transform.localScale.x)+ sp.transform.localScale.x));
