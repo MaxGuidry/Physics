@@ -15,6 +15,8 @@ public class TestSpringDriver : MonoBehaviour
 
     public float RestCoefficient;
     public float kd;
+    public float Windx, Windy, Windz;
+    [HideInInspector]
     public Vector3 Wind;
     public bool GustyWind;
     private List<SpringDamperBehavior> sdbs = new List<SpringDamperBehavior>();
@@ -81,7 +83,9 @@ public class TestSpringDriver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Wind.x = Windx;
+        Wind.y = Windy;
+        Wind.z = Windz;
         foreach (var sd in sdbs)
         {
             SpringDamperBehavior.springConstant = ks;
