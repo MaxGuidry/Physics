@@ -23,6 +23,7 @@ namespace Cloth
             p.anchorx = anchorx;
             p.anchory = anchory;
             p.anchorz = anchorz;
+            p.m_IsAnchor = isAnchor;
 
         }
 

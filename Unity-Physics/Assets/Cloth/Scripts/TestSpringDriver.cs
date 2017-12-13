@@ -22,7 +22,7 @@ public class TestSpringDriver : MonoBehaviour
     private List<SpringDamperBehavior> sdbs = new List<SpringDamperBehavior>();
     private List<ParticleBehavior> parts = new List<ParticleBehavior>();
     private List<Triangle> tris = new List<Triangle>();
-
+    public static List<ParticleBehavior> particles = new List<ParticleBehavior>();
     public Material cloth;
 
     private GameObject clothGO;
@@ -86,12 +86,7 @@ public class TestSpringDriver : MonoBehaviour
         Wind.x = Windx;
         Wind.y = Windy;
         Wind.z = Windz;
-        foreach (var sd in sdbs)
-        {
-            SpringDamperBehavior.springConstant = ks;
-            sd.restCoefficient = RestCoefficient;
-            sd.Kd = kd;
-        }
+
         foreach (var pb in parts)
         {
             if (pb.gravity)
@@ -108,11 +103,14 @@ public class TestSpringDriver : MonoBehaviour
         List<SpringDamperBehavior> removes = new List<SpringDamperBehavior>();
         foreach (var sdb in sdbs)
         {
+            SpringDamperBehavior.springConstant = ks;
+            sdb.restCoefficient = RestCoefficient;
+            sdb.Kd = kd;
             sdb.spring(ks, sdb.sd.l);
-            // if (sdb.Break())
-            //  {
-            //     removes.Add(sdb);
-            // }
+            //if (sdb.Break())
+            //{
+            //    removes.Add(sdb);
+            //}
         }
         foreach (var r in removes)
         {
@@ -126,12 +124,14 @@ public class TestSpringDriver : MonoBehaviour
         {
 
             triangle.CheckCollision();
+
         }
         foreach (var pb in parts)
         {
             pb.UpdateParticle();
         }
         UpdateMesh();
+        particles = parts;
     }
 
     void UpdateMesh()
@@ -159,7 +159,7 @@ public class TestSpringDriver : MonoBehaviour
             for (int j = 0; j < (int)(int)rowscols; j++)
             {
                 GameObject go =
-                    GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, (float)j * RestCoefficient,0f), Quaternion.identity);
+                    GameObject.Instantiate(particlePrefab, new Vector3((float)i * RestCoefficient, (float)j * RestCoefficient, 0f), Quaternion.identity);
                 if (go == null)
                     Debug.Break();
                 DestroyImmediate(go.GetComponent<Renderer>());
@@ -174,8 +174,8 @@ public class TestSpringDriver : MonoBehaviour
         // for (int i = 0; i < (((int)(int)rowscols * (int)(int)rowscols) + ((int)(int)rowscols * ((int)(int)rowscols - 2))); i++)
         for (int i = 0; i < ((int)(int)rowscols * (int)(int)rowscols) - 1; i++)
         {
-              if (i < (int)(int)rowscols)
-                 parts[i].isAnchor = true;
+            if (i < (int)(int)rowscols)
+                parts[i].isAnchor = true;
             //parts[0].isAnchor = true;
             //parts[(int)(int)rowscols - 1].isAnchor = true;
             //parts[(int)(int)rowscols * (int)(int)rowscols - (int)(int)rowscols].isAnchor = true;

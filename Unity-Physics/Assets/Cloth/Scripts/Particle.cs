@@ -85,9 +85,14 @@ namespace Cloth
                 r.y = 0;
         }
 
-        public void FixBallCollisionPosition(Vector3 dir, float dist)
+        //public void FixBallCollisionPosition(Vector3 dir, float dist)
+        //{
+        //    r += dir.normalized * dist;
+        //}
+
+        public void DragParticle(Vector3 pos)
         {
-            r += dir.normalized * dist;
+            r = pos;
         }
     }
 
