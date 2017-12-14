@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class AgentFactory : MonoBehaviour
 {
     public GameObject agentmodelPrefab;
-    public static int cFactor = 0, sFactor = 0, aFactor = 0, wFactor = 0, bounds = 0;
+    public static int cFactor = 0, sFactor = 0, aFactor = 0, wFactor = 0, bounds = 15;
     public int count;
     [HideInInspector]
     public List<Agent> agents = new List<Agent>();

@@ -11,21 +11,20 @@ public class UpdateCollision : MonoBehaviour
         Y,
         Z,
     }
-    
+
     // Use this for initialization
     private void Start()
     {
-        for (int i = 0; i < 7000; i++)
-        {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            go.transform.position = new Vector3(2 * i, 2 * i, 0);
-            go.AddComponent<Rigidbody>();
-            go.AddComponent<BoxCollider>();
-            //ColliderBox cb = go.AddComponent<ColliderBox>();
-            //if (cb.collider == null)
-            //    cb.collider = new AABB();
+        //for (int i = 0; i < 7000; i++)
+        //{
+        //    GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        //    go.transform.position = new Vector3(2 * i, 2 * i, 0);
 
-        }
+        //    ColliderBox cb = go.AddComponent<ColliderBox>();
+        //    if (cb.collider == null)
+        //        cb.collider = new AABB();
+
+        //}
     }
     [System.Serializable]
     public struct AABBPair
@@ -52,7 +51,7 @@ public class UpdateCollision : MonoBehaviour
             return;
         foreach (var colliderBox in cols)
         {
-           
+
 
             colliderBox.collider.min = colliderBox.gameObject.transform.position - .5f *
                                        colliderBox.gameObject.transform.localScale *
@@ -102,7 +101,7 @@ public class UpdateCollision : MonoBehaviour
             Collisions = CombineCollisions(pairslist);
         }
 
-        
+
 
         cols = FindObjectsOfType<ColliderBox>().ToList();
         XPair.Clear();
@@ -114,7 +113,7 @@ public class UpdateCollision : MonoBehaviour
         pairList.Add(YPair);
         Collisions = CombineCollisions(pairList);
 
-       // Debug.Log(Collisions.Count);
+        Debug.Log(Collisions.Count);
         #region MyRegion
 
 
@@ -291,7 +290,7 @@ public class UpdateCollision : MonoBehaviour
 
             foreach (var colliderBox in activeList)
             {
-               
+
 
                 bool collision = false;
                 switch (axis)

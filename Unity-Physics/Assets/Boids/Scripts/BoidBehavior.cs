@@ -75,7 +75,7 @@ namespace Max
 
             Vector3 c = .5f * AgentFactory.cFactor * (a as Boid).Cohesion();
             Debug.DrawLine(this.transform.position, this.transform.position + c.normalized * 2, Color.blue);
-            Vector3 s = .5f * AgentFactory.sFactor * (a as Boid).Seperation();
+            Vector3 s = .5f * AgentFactory.sFactor * (a as Boid).Separation();
             Debug.DrawLine(this.transform.position, this.transform.position + s.normalized * 2, Color.green);
             Vector3 al = .5f * AgentFactory.aFactor * (a as Boid).Alignment();
             Debug.DrawLine(this.transform.position, this.transform.position + al.normalized * 2, Color.red);

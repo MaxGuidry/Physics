@@ -13,28 +13,45 @@ namespace Cloth
         private Vector3 selectPos;
 
         private GameObject representation;
+
+        private bool paused;
         // Use this for initialization
         void Start()
         {
             representation = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             representation.name = "THIS ONE";
+            representation.transform.localScale = new Vector3(.2f, .2f, .2f);
+            Cursor.visible = true;
+            paused = true;
         }
 
+        private Vector3 com = new Vector3();
         // Update is called once per frame
         void Update()
         {
-            Vector3 com = new Vector3();
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Cursor.visible = !Cursor.visible;
+                paused = !paused;
+            }
+            if (paused)
+                return;
+            this.transform.position -= com;
+            com = Vector3.zero;
+
             foreach (var p in TestSpringDriver.particles)
             {
                 com += p.p.position;
             }
+
             if (TestSpringDriver.particles.Count != 0)
                 com /= TestSpringDriver.particles.Count;
             Vector3 centerScreen = new Vector3(Screen.width * .5f, Screen.height * .5f, 0f);
             Vector3 move = new Vector3();
             if (TestSpringDriver.particles.Count != 0)
-                move = (Input.mousePosition - centerScreen) /(TestSpringDriver.particles.Count/3f);
-            this.transform.position =com + move.x * Camera.main.transform.right + move.y * Camera.main.transform.up;
+                move += (4 * new Vector3(Input.GetAxis("Mouse X"), 8 * Input.GetAxis("Mouse Y"), 0f)) / (TestSpringDriver.particles.Count / 3f);
+            this.transform.position += com;
+            this.transform.position += 10 * move.x * Camera.main.transform.right + move.y * Camera.main.transform.up;
             representation.transform.position = this.transform.position - Camera.main.transform.forward * 10f;
             Vector3 dif = this.transform.position - prevPos;
 
@@ -46,7 +63,7 @@ namespace Cloth
             {
                 draggingParticle.isAnchor = false;
             }
-
+            Camera.main.transform.LookAt(this.transform.position);
             prevPos = this.transform.position;
         }
 

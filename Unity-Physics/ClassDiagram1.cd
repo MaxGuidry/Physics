@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Max.Agent">
+    <Position X="5.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAgAACAAAQYAAAAAIAAAAAAAAAQAAAQAAAAAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\Agent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Max.AgentBehavior">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\AgentBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgentFactory" Collapsed="true">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAAQAAACAAAUAARAQAAAAQAABAAEAAAAACAQQAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\AgentFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Max.Boid">
+    <Position X="5.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAIAAAAAAIAACAAAAAQAAAgAECAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\Boid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Max.BoidBehavior">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAiAAAAAAAAAAAAAAAAEAAAAIAAQAAAAACAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\BoidBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraController" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAIAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SliderFactors" Collapsed="true">
+    <Position X="8.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAACAACBAAAAAAAAAgAAABAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Boids\Scripts\SliderFactors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
