@@ -794,9 +794,9 @@ MonoBehaviour:
   ks: 50
   RestCoefficient: 1
   kd: 0.5
-  Windx: 0
-  Windy: 0
-  Windz: 10
+  Windx: 5
+  Windy: 2
+  Windz: 12
   Wind: {x: 5, y: 0, z: 0}
   GustyWind: 0
   cloth: {fileID: 2100000, guid: b01b6d3928701454f951681aeed97f99, type: 2}
