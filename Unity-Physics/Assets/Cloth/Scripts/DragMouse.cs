@@ -63,21 +63,48 @@ namespace Cloth
             {
                 draggingParticle.isAnchor = false;
             }
-            Camera.main.transform.LookAt(this.transform.position);
+            //Camera.main.transform.LookAt(this.transform.position);
+            Camera.main.transform.RotateAround(Camera.main.transform.right, -move.y *.2f);
+            Camera.main.transform.RotateAround(new Vector3(0,1,0), move.x);
             prevPos = this.transform.position;
         }
 
         public void Select()
         {
 
-
-            Particle p;
+            float dist = Vector3.Distance(Camera.main.transform.position, com);
+            Vector3 pos = Camera.main.transform.position;
+            pos += Camera.main.transform.forward * dist / 2f;
             List<ParticleBehavior> parts = new List<ParticleBehavior>(TestSpringDriver.particles);//TestSpringDriver.particles;
-            parts.Sort((a, b) => Vector3.Distance(this.transform.position, a.p.position)
-                .CompareTo(Vector3.Distance(this.transform.position, b.p.position)));
-            draggingParticle = parts[0];
+            parts.Sort((a, b) => Vector3.Distance(pos, a.p.position)
+                .CompareTo(Vector3.Distance(pos, b.p.position)));
+            while (draggingParticle == null)
+            {
+                parts.Sort((a, b) => Vector3.Distance(pos, a.p.position)
+              .CompareTo(Vector3.Distance(pos, b.p.position)));
+                if (Vector3.Distance(parts[0].p.position, pos) > 3f)
+                {
+                    pos += Camera.main.transform.forward;
+                }
+                foreach (var p in parts)
+                {
+                    if (dist < Vector3.Distance(pos, p.p.position))
+                        break;
+                    if (Vector3.Distance(pos, p.p.position) < 3)
+                        draggingParticle =p;
+                }
+            }
+            if (draggingParticle == null)
+                return;
             draggingParticle.isAnchor = true;
             selectPos = this.transform.position;
+            //Particle p;
+            //List<ParticleBehavior> parts = new List<ParticleBehavior>(TestSpringDriver.particles);//TestSpringDriver.particles;
+            //parts.Sort((a, b) => Vector3.Distance(this.transform.position, a.p.position)
+            //    .CompareTo(Vector3.Distance(this.transform.position, b.p.position)));
+            //draggingParticle = parts[0];
+            //draggingParticle.isAnchor = true;
+            //selectPos = this.transform.position;
         }
     }
 }

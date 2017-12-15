@@ -21,12 +21,15 @@ namespace Cloth
             p2 = b;
             p3 = c;
         }
+
         public void AreodynamicForce(Vector3 Wind)
         {
             Vector3 v = (p1.velocity + p2.velocity + p3.velocity) / 3f - Wind;
             Vector3 e = -v.normalized;
-            float a0 = .5f * (Vector3.Cross((p2.position - p1.position).normalized, (p3.position - p1.position).normalized)).magnitude;
-            Vector3 n = Vector3.Cross((p2.position - p1.position), (p3.position - p1.position)).normalized;
+            float a0 = .5f * (Vector3.Cross((p2.position - p1.position).normalized,
+                (p3.position - p1.position).normalized)).magnitude;
+            Vector3 n = Vector3.Cross((p2.position - p1.position),
+                (p3.position - p1.position)).normalized;
             float a = a0 * (Vector3.Dot(v, n) / v.magnitude);
             Vector3 f = -.5f * p * (v.magnitude * v.magnitude) * Cd * a * n;
             if (Single.IsNaN(f.x) || Single.IsNaN(f.y) || Single.IsNaN(f.z))
